@@ -1,0 +1,16 @@
+﻿@using Repository.Models;
+
+@model List<Company>
+
+<h1>Company page</h1>
+<table>
+    @foreach(var company in Model)
+    {
+        <tr>
+            <td>@company.Id</td>
+            <td>@company.Name</td>
+            <td>@company.Email</td>
+            <td>@company.Phone</td>
+        </tr>
+    }
+</table>
