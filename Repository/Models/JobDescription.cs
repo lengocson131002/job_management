@@ -18,6 +18,7 @@ namespace Repository.Models
 
         public string Title { get; set; }
 
+        [Column(TypeName = "nvarchar(max)")]
         public string Description { get; set; }
 
         public int? RequiredNumber { get; set; }

@@ -9,8 +9,8 @@ namespace Repository.Repositories
 {
     public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
-        private JobManagementDBContext _context = null;
-        private DbSet<T> table = null;
+        protected JobManagementDBContext _context = null;
+        protected DbSet<T> table = null;
 
         public BaseRepository(JobManagementDBContext _context)
         {
