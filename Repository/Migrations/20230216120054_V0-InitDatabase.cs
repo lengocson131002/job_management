@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Repository.Migrations
 {
-    public partial class V0CreateDatabase : Migration
+    public partial class V0InitDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -17,8 +17,9 @@ namespace Repository.Migrations
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -37,12 +38,12 @@ namespace Repository.Migrations
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Longitude = table.Column<float>(type: "real", nullable: false),
-                    Latitude = table.Column<float>(type: "real", nullable: false),
+                    Longitude = table.Column<float>(type: "real", nullable: true),
+                    Latitude = table.Column<float>(type: "real", nullable: true),
                     Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MinScale = table.Column<int>(type: "int", nullable: false),
-                    MaxScale = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MinScale = table.Column<int>(type: "int", nullable: true),
+                    MaxScale = table.Column<int>(type: "int", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -59,10 +60,11 @@ namespace Repository.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RequiredNumber = table.Column<int>(type: "int", nullable: false),
-                    MinSalary = table.Column<long>(type: "bigint", nullable: false),
-                    MaxSalary = table.Column<long>(type: "bigint", nullable: false),
+                    RequiredNumber = table.Column<int>(type: "int", nullable: true),
+                    MinSalary = table.Column<long>(type: "bigint", nullable: true),
+                    MaxSalary = table.Column<long>(type: "bigint", nullable: true),
                     Type = table.Column<int>(type: "int", nullable: false),
+                    Level = table.Column<int>(type: "int", nullable: false),
                     ClosedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CompanyId = table.Column<long>(type: "bigint", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -80,28 +82,6 @@ namespace Repository.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Level",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    JobDescriptionId = table.Column<long>(type: "bigint", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Level", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Level_JobDescription_JobDescriptionId",
-                        column: x => x.JobDescriptionId,
-                        principalTable: "JobDescription",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Resume",
                 columns: table => new
                 {
@@ -112,7 +92,7 @@ namespace Repository.Migrations
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Birthday = table.Column<DateTime>(type: "datetime2", nullable: false),
                     FileUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     JobDescriptionId = table.Column<long>(type: "bigint", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -125,53 +105,6 @@ namespace Repository.Migrations
                         column: x => x.JobDescriptionId,
                         principalTable: "JobDescription",
                         principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Tag",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    JobDescriptionId = table.Column<long>(type: "bigint", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Tag", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Tag_JobDescription_JobDescriptionId",
-                        column: x => x.JobDescriptionId,
-                        principalTable: "JobDescription",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "JobDescription_Level",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    JobDescriptionId = table.Column<long>(type: "bigint", nullable: false),
-                    LevelId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_JobDescription_Level", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_JobDescription_Level_JobDescription_JobDescriptionId",
-                        column: x => x.JobDescriptionId,
-                        principalTable: "JobDescription",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_JobDescription_Level_Level_LevelId",
-                        column: x => x.LevelId,
-                        principalTable: "Level",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -231,27 +164,55 @@ namespace Repository.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "JobDescription_Tag",
+                name: "Skill",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    JobDescriptionId = table.Column<long>(type: "bigint", nullable: true),
+                    ResumeId = table.Column<long>(type: "bigint", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Skill", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Skill_JobDescription_JobDescriptionId",
+                        column: x => x.JobDescriptionId,
+                        principalTable: "JobDescription",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Skill_Resume_ResumeId",
+                        column: x => x.ResumeId,
+                        principalTable: "Resume",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "JobDescription_Skill",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     JobDescriptionId = table.Column<long>(type: "bigint", nullable: false),
-                    TagId = table.Column<long>(type: "bigint", nullable: false)
+                    SkillId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_JobDescription_Tag", x => x.Id);
+                    table.PrimaryKey("PK_JobDescription_Skill", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_JobDescription_Tag_JobDescription_JobDescriptionId",
+                        name: "FK_JobDescription_Skill_JobDescription_JobDescriptionId",
                         column: x => x.JobDescriptionId,
                         principalTable: "JobDescription",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_JobDescription_Tag_Tag_TagId",
-                        column: x => x.TagId,
-                        principalTable: "Tag",
+                        name: "FK_JobDescription_Skill_Skill_SkillId",
+                        column: x => x.SkillId,
+                        principalTable: "Skill",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -282,29 +243,14 @@ namespace Repository.Migrations
                 column: "CompanyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_JobDescription_Level_JobDescriptionId",
-                table: "JobDescription_Level",
+                name: "IX_JobDescription_Skill_JobDescriptionId",
+                table: "JobDescription_Skill",
                 column: "JobDescriptionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_JobDescription_Level_LevelId",
-                table: "JobDescription_Level",
-                column: "LevelId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_JobDescription_Tag_JobDescriptionId",
-                table: "JobDescription_Tag",
-                column: "JobDescriptionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_JobDescription_Tag_TagId",
-                table: "JobDescription_Tag",
-                column: "TagId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Level_JobDescriptionId",
-                table: "Level",
-                column: "JobDescriptionId");
+                name: "IX_JobDescription_Skill_SkillId",
+                table: "JobDescription_Skill",
+                column: "SkillId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Resume_JobDescriptionId",
@@ -312,9 +258,14 @@ namespace Repository.Migrations
                 column: "JobDescriptionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tag_JobDescriptionId",
-                table: "Tag",
+                name: "IX_Skill_JobDescriptionId",
+                table: "Skill",
                 column: "JobDescriptionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Skill_ResumeId",
+                table: "Skill",
+                column: "ResumeId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -329,19 +280,13 @@ namespace Repository.Migrations
                 name: "Contract");
 
             migrationBuilder.DropTable(
-                name: "JobDescription_Level");
+                name: "JobDescription_Skill");
 
             migrationBuilder.DropTable(
-                name: "JobDescription_Tag");
+                name: "Skill");
 
             migrationBuilder.DropTable(
                 name: "Resume");
-
-            migrationBuilder.DropTable(
-                name: "Level");
-
-            migrationBuilder.DropTable(
-                name: "Tag");
 
             migrationBuilder.DropTable(
                 name: "JobDescription");

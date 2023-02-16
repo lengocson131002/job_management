@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Repository.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -25,5 +26,7 @@ namespace Repository.Models
         public string? Phone { get; set; }
 
         public string? Description { get; set; }
+
+        public AccountStatus status;
     }
 }

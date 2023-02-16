@@ -23,17 +23,15 @@ namespace Repository
 
         public DbSet<Resume> Resumes { get; set; }
 
-        public DbSet<Level> Levels { get; set; }
-
-        public DbSet<Tag> Tags { get; set; }
+        public DbSet<Skill> Levels { get; set; }
 
         public DbSet<Contract> Contracts { get; set; }
 
         public DbSet<Application> Applications { get; set; }
 
-        public DbSet<JobDescriptionLevel> JobDescriptionsLevel { get; set; }
+        public DbSet<ResumeSkill> ResumeSkills { get; set; }
 
-        public DbSet<JobDescriptionTag> JobDescriptionTags { get; set; }
+        public DbSet<JobDescriptionSkill> JobDescriptionSkills { get; set; }
 
         public override int SaveChanges()
         {
