@@ -12,8 +12,8 @@ using Repository;
 namespace Repository.Migrations
 {
     [DbContext(typeof(JobManagementDBContext))]
-    [Migration("20230211175115_V1 - UpdateNullableFields")]
-    partial class V1UpdateNullableFields
+    [Migration("20230216120054_V0-InitDatabase")]
+    partial class V0InitDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -194,6 +194,9 @@ namespace Repository.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Level")
+                        .HasColumnType("int");
+
                     b.Property<long?>("MaxSalary")
                         .HasColumnType("bigint");
 
@@ -220,7 +223,7 @@ namespace Repository.Migrations
                     b.ToTable("JobDescription");
                 });
 
-            modelBuilder.Entity("Repository.Models.JobDescriptionLevel", b =>
+            modelBuilder.Entity("Repository.Models.JobDescriptionSkill", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -231,70 +234,16 @@ namespace Repository.Migrations
                     b.Property<long>("JobDescriptionId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("LevelId")
+                    b.Property<long>("SkillId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
                     b.HasIndex("JobDescriptionId");
 
-                    b.HasIndex("LevelId");
+                    b.HasIndex("SkillId");
 
-                    b.ToTable("JobDescription_Level");
-                });
-
-            modelBuilder.Entity("Repository.Models.JobDescriptionTag", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<long>("JobDescriptionId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("TagId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("JobDescriptionId");
-
-                    b.HasIndex("TagId");
-
-                    b.ToTable("JobDescription_Tag");
-                });
-
-            modelBuilder.Entity("Repository.Models.Level", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long?>("JobDescriptionId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("ModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("JobDescriptionId");
-
-                    b.ToTable("Level");
+                    b.ToTable("JobDescription_Skill");
                 });
 
             modelBuilder.Entity("Repository.Models.Resume", b =>
@@ -343,7 +292,7 @@ namespace Repository.Migrations
                     b.ToTable("Resume");
                 });
 
-            modelBuilder.Entity("Repository.Models.Tag", b =>
+            modelBuilder.Entity("Repository.Models.Skill", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -367,11 +316,16 @@ namespace Repository.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long?>("ResumeId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
 
                     b.HasIndex("JobDescriptionId");
 
-                    b.ToTable("Tag");
+                    b.HasIndex("ResumeId");
+
+                    b.ToTable("Skill");
                 });
 
             modelBuilder.Entity("Repository.Models.Application", b =>
@@ -423,7 +377,7 @@ namespace Repository.Migrations
                     b.Navigation("Company");
                 });
 
-            modelBuilder.Entity("Repository.Models.JobDescriptionLevel", b =>
+            modelBuilder.Entity("Repository.Models.JobDescriptionSkill", b =>
                 {
                     b.HasOne("Repository.Models.JobDescription", "JobDescription")
                         .WithMany()
@@ -431,41 +385,15 @@ namespace Repository.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Repository.Models.Level", "Level")
+                    b.HasOne("Repository.Models.Skill", "Skill")
                         .WithMany()
-                        .HasForeignKey("LevelId")
+                        .HasForeignKey("SkillId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("JobDescription");
 
-                    b.Navigation("Level");
-                });
-
-            modelBuilder.Entity("Repository.Models.JobDescriptionTag", b =>
-                {
-                    b.HasOne("Repository.Models.JobDescription", "JobDescription")
-                        .WithMany()
-                        .HasForeignKey("JobDescriptionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Repository.Models.Tag", "Tag")
-                        .WithMany()
-                        .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("JobDescription");
-
-                    b.Navigation("Tag");
-                });
-
-            modelBuilder.Entity("Repository.Models.Level", b =>
-                {
-                    b.HasOne("Repository.Models.JobDescription", null)
-                        .WithMany("Levels")
-                        .HasForeignKey("JobDescriptionId");
+                    b.Navigation("Skill");
                 });
 
             modelBuilder.Entity("Repository.Models.Resume", b =>
@@ -475,11 +403,15 @@ namespace Repository.Migrations
                         .HasForeignKey("JobDescriptionId");
                 });
 
-            modelBuilder.Entity("Repository.Models.Tag", b =>
+            modelBuilder.Entity("Repository.Models.Skill", b =>
                 {
                     b.HasOne("Repository.Models.JobDescription", null)
-                        .WithMany("Tags")
+                        .WithMany("Skills")
                         .HasForeignKey("JobDescriptionId");
+
+                    b.HasOne("Repository.Models.Resume", null)
+                        .WithMany("Skills")
+                        .HasForeignKey("ResumeId");
                 });
 
             modelBuilder.Entity("Repository.Models.Company", b =>
@@ -489,11 +421,14 @@ namespace Repository.Migrations
 
             modelBuilder.Entity("Repository.Models.JobDescription", b =>
                 {
-                    b.Navigation("Levels");
-
                     b.Navigation("Resumes");
 
-                    b.Navigation("Tags");
+                    b.Navigation("Skills");
+                });
+
+            modelBuilder.Entity("Repository.Models.Resume", b =>
+                {
+                    b.Navigation("Skills");
                 });
 #pragma warning restore 612, 618
         }

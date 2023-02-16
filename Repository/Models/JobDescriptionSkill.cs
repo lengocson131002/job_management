@@ -8,15 +8,16 @@ using System.Threading.Tasks;
 
 namespace Repository.Models
 {
-    [Table("JobDescription_Tag")]
-    public class JobDescriptionTag
+    [Table("JobDescription_Skill")]
+    public class JobDescriptionSkill
     {
         [Key]
         public long Id { get; set; }
-        public long JobDescriptionId { get; set; }
+
+        public long JobDescriptionId { get; set; } 
         public JobDescription JobDescription { get; set; }
 
-        public long TagId { get; set; }
-        public Tag Tag { get; set; }
+        public long SkillId { get; set; }
+        public Skill Skill { get; set; }
     }
 }

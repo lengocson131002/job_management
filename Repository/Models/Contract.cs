@@ -23,5 +23,9 @@ namespace Repository.Models
 
         public long ResumeId { get; set; }
         public Resume Resume { get; set;}
+
+        public Double offerSalary;      // Mức lương công ty offer
+
+        public Double requestSalary;    // Mức lương ứng viên mong muốn
     }
 }

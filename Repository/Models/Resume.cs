@@ -26,5 +26,7 @@ namespace Repository.Models
 
         public string? Description { get; set; }
 
+        public IList<Skill> Skills { get; set; } 
+
     }
 }
