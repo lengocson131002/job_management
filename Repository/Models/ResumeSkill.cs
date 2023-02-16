@@ -8,14 +8,16 @@ using System.Threading.Tasks;
 
 namespace Repository.Models
 {
-    [Table("Tag")]
-    public class Tag : BaseEntity
+    [Table("Resume_Skill")]
+    public class ResumeSkill
     {
         [Key]
-        public long Id { get; set; }    
-        
-        public string Name { get; set; }
+        public long Id { get; set; }
 
-        public string? Description { get; set; }
+        public long ResumeId { get; set; }
+        public Resume Resume { get; set; }
+
+        public long SkillId { get; set; }
+        public Skill Skill { get; set; }
     }
 }

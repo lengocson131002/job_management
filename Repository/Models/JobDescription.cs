@@ -28,14 +28,14 @@ namespace Repository.Models
 
         public JobType Type { get; set; }
 
+        public JobLevel Level { get; set; }
+
         public DateTime? ClosedAt { get; set; }
 
         public long CompanyId { get; set; }
         public Company Company { get; set; }
 
-        public IList<Level> Levels { get; set; }
-
-        public IList<Tag> Tags { get; set; }
+        public IList<Skill> Skills { get; set; }
 
         public IList<Resume> Resumes { get; set; }
 
