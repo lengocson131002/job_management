@@ -27,6 +27,8 @@ namespace Repository.Models
 
         public string? Description { get; set; }
 
-        public AccountStatus status;
+        public AccountStatus Status { get; set; }
+
+        public bool? IsRootAdmin { get; set; } = false;
     }
 }
