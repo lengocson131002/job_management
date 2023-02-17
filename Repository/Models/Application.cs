@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Repository.Models
 {
     [Table("Application")]
-    public class Application
+    public class Application : BaseEntity
     {
         [Key]
         public long Id { get; set; }

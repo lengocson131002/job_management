@@ -58,5 +58,37 @@ namespace Repository
                 baseEntity.ModifiedAt = now;
             }
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // JobDescription Skill
+            modelBuilder.Entity<JobDescription>()
+             .HasMany(job => job.Skills)
+             .WithMany(skill => skill.JobDescriptions)
+             .UsingEntity<JobDescriptionSkill>(
+                js => js.HasOne(prop => prop.Skill).WithMany().HasForeignKey(prop => prop.SkillId),
+                js => js.HasOne(prop => prop.JobDescription).WithMany().HasForeignKey(prop => prop.JobDescriptionId),
+                js => {});
+
+            // Resume Skill
+            modelBuilder.Entity<Resume>()
+             .HasMany(resume => resume.Skills)
+             .WithMany(skill => skill.Resumes)
+             .UsingEntity<ResumeSkill>(
+                js => js.HasOne(prop => prop.Skill).WithMany().HasForeignKey(prop => prop.SkillId),
+                js => js.HasOne(prop => prop.Resume).WithMany().HasForeignKey(prop => prop.ResumeId),
+                js => { });
+
+            // Application
+            modelBuilder.Entity<JobDescription>()
+             .HasMany(job => job.Resumes)
+             .WithMany(resume=> resume.JobDescriptions)
+             .UsingEntity<Application>(
+                js => js.HasOne(prop => prop.Resume).WithMany().HasForeignKey(prop => prop.ResumeId),
+                js => js.HasOne(prop => prop.JobDescription).WithMany().HasForeignKey(prop => prop.JobDescriptionId),
+                js => { });
+        }
     }
 }

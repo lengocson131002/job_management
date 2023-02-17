@@ -28,5 +28,7 @@ namespace Repository.Models
 
         public IList<Skill> Skills { get; set; } 
 
+        public IList<JobDescription> JobDescriptions { get; set; }
+
     }
 }
