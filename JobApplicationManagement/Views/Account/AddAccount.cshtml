@@ -4,15 +4,6 @@
     ViewData["Title"] = "Account Detail Page";
 }
 
-@{
-    if (@TempData["Error"] != null)
-    {
-        <div class="alert alert-danger alert-dismissible" role="alert">
-            @TempData["Error"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    }
-}
 <!-- Basic with Icons -->
 <div class="col-xxl col-lg-8 container">
     <div class="card">

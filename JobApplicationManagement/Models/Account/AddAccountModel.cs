@@ -14,6 +14,8 @@ namespace JobApplicationManagement.Models.Auth
         [Required]
         public string Email { get; set; }
         [Required]
+        [RegularExpression(@"^(84|0[3|5|7|8|9])+([0-9]{8})$",
+            ErrorMessage = "Invalid phone number")]
         public string Phone { get; set; }
 
         public string? Description { get; set; }
