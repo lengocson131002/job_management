@@ -39,6 +39,11 @@ namespace Repository
             return base.SaveChanges();
         }
 
+        internal Account? Find(Func<object, bool> value)
+        {
+            throw new NotImplementedException();
+        }
+
         private void AddTimestamps()
         {
             var entites = ChangeTracker.Entries()

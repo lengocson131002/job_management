@@ -1,9 +1,11 @@
-﻿using JobApplicationManagement.Models;
+﻿using JobApplicationManagement.Filters;
+using JobApplicationManagement.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace JobApplicationManagement.Controllers
 {
+    [TypeFilter(typeof(AuthorizationFilter))]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

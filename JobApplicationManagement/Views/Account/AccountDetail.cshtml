@@ -1,0 +1,116 @@
+﻿@using JobApplicationManagement.Models.Auth;
+
+@model AccountModel
+
+@{
+    ViewData["Title"] = "Account Detail Page";
+}
+
+<!-- Basic with Icons -->
+<div class="col-xxl col-lg-8 container">
+    <div class="card">
+        <div class="card-header d-flex align-items-center justify-content-between">
+            <h5 class="mb-0">Account Detail</h5>
+        </div>
+        <div class="card-body">
+            <form>
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Id</label>
+                    <div class="col-sm-10">
+                        <div class="input-group input-group-merge">
+                            <input type="text"
+                                   class="form-control"
+                                   id="basic-icon-default-fullname"
+                                   placeholder="@Model.Id"
+                                   aria-label="@Model.Id"
+                                   aria-describedby="basic-icon-default-fullname2"
+                                   readonly />
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Full Name</label>
+                    <div class="col-sm-10">
+                        <div class="input-group input-group-merge">
+                            <span id="basic-icon-default-fullname2" class="input-group-text">
+                                <i class="bx bx-user"></i>
+                            </span>
+                            <input type="text"
+                                   class="form-control"
+                                   id="basic-icon-default-fullname"
+                                   placeholder="@Model.FullName"
+                                   aria-label="@Model.FullName"
+                                   aria-describedby="basic-icon-default-fullname2" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label" for="basic-icon-default-compny">Username</label>
+                    <div class="col-sm-10">
+                        <div class="input-group input-group-merge">
+                            <span id="basic-icon-default-company2" class="input-group-text">
+                                <i class="bx bx-buildings"></i>
+                            </span>
+                            <input type="text"
+                                   id="basic-icon-default-company"
+                                   class="form-control"
+                                   placeholder="@Model.Username"
+                                   aria-label="@Model.Username"
+                                   aria-describedby="basic-icon-default-company2" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label" for="basic-icon-default-email">Email</label>
+                    <div class="col-sm-10">
+                        <div class="input-group input-group-merge">
+                            <span class="input-group-text"><i class="bx bx-envelope"></i></span>
+                            <input type="text"
+                                   id="basic-icon-default-email"
+                                   class="form-control"
+                                   placeholder="@Model.Email"
+                                   aria-label="@Model.Email"
+                                   aria-describedby="basic-icon-default-email2" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label" for="basic-icon-default-phone">Phone Number</label>
+                    <div class="col-sm-10">
+                        <div class="input-group input-group-merge">
+                            <span id="basic-icon-default-phone2" class="input-group-text">
+                                <i class="bx bx-phone"></i>
+                            </span>
+                            <input type="text"
+                                   id="basic-icon-default-phone"
+                                   class="form-control phone-mask"
+                                   placeholder="@Model.Phone"
+                                   aria-label="@Model.Phone"
+                                   aria-describedby="basic-icon-default-phone2" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-sm-2 form-label" for="basic-icon-default-message">Description</label>
+                    <div class="col-sm-10">
+                        <div class="input-group input-group-merge">
+                            <span id="basic-icon-default-message2" class="input-group-text">
+                                <i class="bx bx-comment"></i>
+                            </span>
+                            <textarea id="basic-icon-default-message"
+                                      class="form-control"
+                                      placeholder="@Model.Description"
+                                      aria-label="@Model.Description"
+                                      aria-describedby="basic-icon-default-message2"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-end">
+                    <div class="col-sm-10">
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
