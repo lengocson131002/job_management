@@ -32,6 +32,8 @@ namespace JobApplicationManagement
             builder.Services.AddScoped(typeof(IAccountRepository), typeof(AccountRepository));
             builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+            builder.Services.AddTransient(typeof(JobDescriptionRepository), typeof(JobDescriptionRepository));
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

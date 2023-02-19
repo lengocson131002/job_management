@@ -1,0 +1,140 @@
+﻿@using JobApplicationManagement.Models.JobDescription;
+@using Repository.Enums;
+@using Repository.Models;
+
+@model UpdateJobDescriptionModel;
+@{
+    var companies = ViewData["Companies"] as List<Company>;
+    var skills = ViewData["Skills"] as List<Skill>;
+}
+<div class="card-body w-100 mb-5 d-flex justify-content-center mx-auto " style="max-width: 800px">
+    <div class="card w-100">
+        <div class="sticky-top bg-white bg-primary">
+            <h4 class="p-4 d-flex justify-content-center align-items-center text-white">
+                <ion-icon name="pencil" class="me-2 bg-label-success p-1 rounded"></ion-icon>
+                UPDATE JOB DESCRIPTION
+            </h4>
+        </div>
+        <form asp-action="Update" asp-controller="JobDescription" class="form card-body" method="post">
+            @Html.HiddenFor(m => m.Id)
+            <div class="mb-3">
+                <label for="select-company" class="col-form-label">Company</label>
+                <select asp-for="CompanyId" class="form-select" id="select-company">
+                    @if (companies != null && companies.Count() > 0)
+                    {
+                        @foreach (var company in companies)
+                        {
+                            @if (Model?.CompanyId == company.Id)
+                            {
+                                <option value="@company.Id" selected>@company.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@company.Id">@company.Name</option>
+                            }
+                        }
+                    }
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="job-description-title">Title</label>
+                <div>
+                    <input type="text" class="form-control" id="job-description-title" asp-for="Title" placeholder="ASP.NET core MVC" />
+                    <span asp-validation-for="Title" class="text-danger mt-1 d-block invalid-feedback"></span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="job-description">Description</label>
+                <div>
+                    <textarea id="job-description"
+                              asp-for="Description"
+                              class="form-control"
+                              rows="10"></textarea>
+                    <span asp-validation-for="Description" class="text-danger mt-1 d-block invalid-feedback"></span>
+                </div>
+            </div>
+
+            <div class="input-group mb-3">
+                <label class="form-label" for="job-description-required-number">Required Number</label>
+                <div class="input-group">
+                    <input asp-for="RequiredNumber" min="1" id="job-description-required-number" type="number" class="form-control" />
+                    <span asp-validation-for="RequiredNumber" class="text-danger mt-1 d-block invalid-feedback"></span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label col-md-2">Salary</label>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="input-group col-md-2">
+                            <span class="input-group-text">From</span>
+                            <input asp-for="MinSalary" min="1" id="job-description-salary-from" type="number" class="form-control" />
+                            <span class="input-group-text">$</span>
+                            <span asp-validation-for="MinSalary" class="text-danger mt-1 d-block invalid-feedback"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="input-group col-md-2">
+                            <span class="input-group-text">To</span>
+                            <input asp-for="MaxSalary" min="1" id="job-description-salary-from" type="number" class="form-control" />
+                            <span class="input-group-text">$</span>
+                            <span asp-validation-for="MaxSalary" class="text-danger mt-1 d-block invalid-feedback"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="create-job-type" class="col-form-label">Type</label>
+                    <select asp-for="Type" class="form-select" asp-items="Html.GetEnumSelectList<JobType>()" id="create-job-type"></select>
+                    <span asp-validation-for="Type" class="text-danger mt-1 d-block invalid-feedback"></span>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label for="create-job-level" class="col-form-label">Level</label>
+                    <select asp-for="Level" class="form-select" asp-items="Html.GetEnumSelectList<JobLevel>()" id="create-job-level"></select>
+                    <span asp-validation-for="Level" class="text-danger mt-1 d-block invalid-feedback"></span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="create-job-skills" class="col-form-label">Skills</label>
+                <div class="rounded border border-primary:active">
+                    <select asp-for="SkillIds" class="w-100 selectpicker" multiple id="create-job-skills">
+                        @if (skills != null && skills.Count() > 0)
+                        {
+                            @foreach (var skill in skills)
+                            {
+                                <option selected="@Model?.SkillIds?.Contains(skill.Id)" value="@skill?.Id">@skill?.Name</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <span asp-validation-for="SkillIds" class="text-danger mt-1 d-block invalid-feedback"></span>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="job-closed-at" class="col-md-2 col-form-label">Closed At</label>
+                <input asp-for="ClosedAt" type="date" class="form-control" />
+                <span asp-validation-for="ClosedAt" class="text-danger mt-1 d-block invalid-feedback"></span>
+            </div>
+
+            <div class="mt-5">
+                <button type="submit" class=" btn btn-primary mx-auto">Update</button>
+                <a href="@Url.Action("Index")" class=" btn btn-outline-danger mx-auto">Cancel</a>
+            </div>
+        </form>
+    </div>
+
+    @section scripts {
+        <script>
+            $(function () {
+                $('.selectpicker').selectpicker();
+            });
+        </script>
+    }
+</div>
