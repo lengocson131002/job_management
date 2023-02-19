@@ -1,0 +1,139 @@
+﻿@using Repository.Models;
+
+@model Company;
+
+<div class="card company-detail-container p-4">
+    <div class="card-header">
+        <h3>Create a new Company</h3>
+    </div>
+    <div class="card-body">
+        <form asp-controller="Company" asp-action="CreateCompany">
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="CreatedAt" />
+            <div class="d-flex gap-5 mb-3">
+                <div class="flex-fill">
+                    <label class="form-label" for="basic-icon-default-company">Company</label>
+                    <div class="input-group input-group-merge">
+                        <span id="basic-icon-default-company2" class="input-group-text">
+                            <i class="bx bx-buildings"></i>
+                        </span>
+                        <input type="text"
+                               asp-for="Name"
+                               id="basic-icon-default-company"
+                               class="form-control"
+                               placeholder="ACME Inc."
+                               aria-label="ACME Inc."
+                               aria-describedby="basic-icon-default-company2" />
+
+                    </div>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="flex-fill">
+                    <label class="form-label" for="basic-icon-default-email">Email</label>
+                    <div class="input-group input-group-merge">
+                        <span class="input-group-text"><i class="bx bx-envelope"></i></span>
+                        <input type="text"
+                               asp-for="Email"
+                               id="basic-icon-default-email"
+                               class="form-control"
+                               placeholder="john.doe"
+                               aria-label="john.doe"
+                               aria-describedby="basic-icon-default-email2" />
+
+                    </div>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="d-flex gap-5 mb-3">
+                <div class="w-50 flex-fill">
+                    <label class="form-label" for="basic-icon-default-phone">Phone No</label>
+                    <div class="input-group input-group-merge">
+                        <span id="basic-icon-default-phone2" class="input-group-text">
+                            <i class="bx bx-phone"></i>
+                        </span>
+                        <input type="text"
+                               asp-for="Phone"
+                               id="basic-icon-default-phone"
+                               class="form-control phone-mask"
+                               placeholder="658 799 8941"
+                               aria-label="658 799 8941"
+                               aria-describedby="basic-icon-default-phone2" />
+
+                    </div>
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+
+                <div class="w-50">
+                    <div class="d-flex">
+                        <div class="me-2">
+                            <label class="form-label" for="html5-number-input-min">Min</label>
+                            <div class="input-group input-group-merge">
+                                <span id="basic-icon-default-company2" class="input-group-text">
+                                    <i class='bx bxs-user'></i>
+                                </span>
+                                <input asp-for="MinScale" class="form-control" type="number" min=1 value="10" id="html5-number-input-min" />
+                            </div>
+                        </div>
+                        <div class="">
+                            <label class="form-label" for="html5-number-input-max">Max</label>
+                            <div class="input-group input-group-merge">
+                                <span id="basic-icon-default-company2" class="input-group-text">
+                                    <i class='bx bxs-user'></i>
+                                </span>
+                                <input asp-for="MaxScale" class="form-control" type="number" min=1 value="20" id="html5-number-input-max" />
+                            </div>
+                        </div>
+                    </div>
+                    <span asp-validation-for="MinScale" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="d-flex gap-5 mb-3">
+                <div class="w-50 flex-fill">
+                    <label class="form-label" for="basic-icon-default-address">Address</label>
+                    <div class="input-group input-group-merge">
+                        <span id="basic-icon-default-address" class="input-group-text">
+                            <i class='bx bxs-city'></i>
+                        </span>
+                        <input type="text"
+                               asp-for="Address"
+                               id="basic-icon-default-address"
+                               class="form-control"
+                               placeholder="ACME Inc."
+                               aria-label="ACME Inc."
+                               aria-describedby="basic-icon-default-address" />
+                    </div>
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+                <div class="w-50 flex-fill">
+                    <label class="form-label" for="basic-icon-default-country">Country</label>
+                    <div class="input-group input-group-merge">
+                        <span id="basic-icon-default-country" class="input-group-text"><i class='bx bx-current-location'></i></span>
+                        <select asp-for="Country" id="basic-icon-default-country" class="form-select countrypicker" data-default="VN"></select>
+                    </div>
+                    <span asp-validation-for="Country" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="basic-icon-default-message">Description</label>
+                <div class="input-group input-group-merge">
+                    <span id="basic-icon-default-message2" class="input-group-text">
+                        <i class="bx bx-comment"></i>
+                    </span>
+                    <textarea asp-for="Description" id="basic-icon-default-message"
+                              class="form-control"
+                              placeholder="Company about technology field.."
+                              aria-label="Company about technology field.."
+                              aria-describedby="basic-icon-default-message2"></textarea>
+                </div>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+    </div>
+</div>
+
+
+<script>
+    $('.countrypicker').countrypicker();
+</script>
