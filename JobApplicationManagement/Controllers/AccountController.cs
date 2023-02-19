@@ -55,11 +55,15 @@ namespace JobApplicationManagement.Controllers
             {
                 TempData["Error"] = "Cannot inactivate your self";
                 return RedirectToAction(nameof(Index));
-
             }
             Account account = _accountRepository.GetById(model.Id);
             if (account != null)
             {
+                if (account.IsRootAdmin != null && (bool)account.IsRootAdmin)
+                {
+                    TempData["Error"] = "Cannot inactivate root admin";
+                    return RedirectToAction(nameof(Index));
+                }
                 account.Status = AccountStatus.INACTIVE;
                 _accountRepository.Update(account);
             }

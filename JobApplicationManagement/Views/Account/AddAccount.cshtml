@@ -34,7 +34,7 @@
                                    id="basic-icon-default-fullname"
                                    placeholder="Full Name"
                                    aria-label="Full Name"
-                                   value="@Model.FullName"
+                                   value="@Model?.FullName"
                                    aria-describedby="basic-icon-default-fullname2" />
                         </div>
                         <span asp-validation-for="FullName" class="text-danger"></span>
@@ -52,7 +52,7 @@
                                    class="form-control"
                                    name="Username"
                                    placeholder="Username"
-                                   value="@Model.Username"
+                                   value="@Model?.Username"
                                    aria-label="Username"
                                    aria-describedby="basic-icon-default-company2" />
                         </div>
@@ -89,7 +89,7 @@
                                    class="form-control"
                                    placeholder="Email"
                                    aria-label="Email"
-                                   value="@Model.Email"
+                                   value="@Model?.Email"
                                    aria-describedby="basic-icon-default-email2" />
                         </div>
                         <span asp-validation-for="Email" class="text-danger"></span>
@@ -109,7 +109,7 @@
                                    placeholder="Phone Number"
                                    aria-label="Phone Number"
                                    name="Phone"
-                                   value="@Model.Phone"
+                                   value="@Model?.Phone"
                                    aria-describedby="basic-icon-default-phone2" />
                         </div>
                         <span asp-validation-for="Phone" class="text-danger"></span>

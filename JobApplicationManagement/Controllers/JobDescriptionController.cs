@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-﻿using JobApplicationManagement.Filters;
+using JobApplicationManagement.Filters;
 using Microsoft.AspNetCore.Mvc;
-=======
-﻿using Microsoft.AspNetCore.Mvc;
->>>>>>> origin/develop
 using Repository.Repositories;
 
 namespace JobApplicationManagement.Controllers
