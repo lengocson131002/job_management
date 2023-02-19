@@ -246,9 +246,7 @@ namespace Repository.Migrations
                     b.ToTable("JobDescription_Skill");
                 });
 
-<<<<<<<< HEAD:Repository/Migrations/20230216120054_V0-InitDatabase.Designer.cs
-========
-            modelBuilder.Entity("Repository.Models.ResumeSkill", b =>
+            modelBuilder.Entity("Repository.Models.Resume", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -256,8 +254,8 @@ namespace Repository.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
-                    b.Property<long>("ResumeId")
-                        .HasColumnType("bigint");
+                    b.Property<DateTime>("Birthday")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -276,13 +274,22 @@ namespace Repository.Migrations
                     b.Property<long?>("JobDescriptionId")
                         .HasColumnType("bigint");
 
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ResumeId");
+                    b.HasIndex("JobDescriptionId");
 
-                    b.HasIndex("SkillId");
-
-                    b.ToTable("Resume_Skill");
+                    b.ToTable("Resume");
                 });
 
             modelBuilder.Entity("Repository.Models.Skill", b =>
@@ -392,8 +399,9 @@ namespace Repository.Migrations
             modelBuilder.Entity("Repository.Models.Resume", b =>
                 {
                     b.HasOne("Repository.Models.JobDescription", null)
-                        .WithMany("Skills")
+                        .WithMany("Resumes")
                         .HasForeignKey("JobDescriptionId");
+                });
 
             modelBuilder.Entity("Repository.Models.Skill", b =>
                 {
