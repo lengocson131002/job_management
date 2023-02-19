@@ -10,7 +10,7 @@ namespace Repository.Repositories.interfaces
     {
         IEnumerable<T> GetAll();
 
-        T GetById(object id);
+        T GetById(object? id);
 
         void Insert(T obj);
 

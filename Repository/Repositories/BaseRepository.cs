@@ -24,7 +24,7 @@ namespace Repository.Repositories
             return table.ToList();
         }
 
-        public T GetById(object id)
+        public T GetById(object? id)
         {
             if (id == null)
             {

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace JobApplicationManagement.Models.Auth
 {
-    public class DeleteAccountModel
+    public class InactivateAccountModel
     {
         public string Id { get; set; }
     }

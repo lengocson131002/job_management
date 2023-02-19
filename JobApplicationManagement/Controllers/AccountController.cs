@@ -24,13 +24,13 @@ namespace JobApplicationManagement.Controllers
         }
 
         [HttpGet]
-        [Route("AccountDetail/{id}")]
+        [Route("Account/AccountDetail/{id}")]
         public IActionResult AccountDetail(string id)
         {
             Account account = _accountRepository.GetById(id);
             if (account == null)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
             AccountModel accountModel = new AccountModel()
             {
@@ -48,7 +48,7 @@ namespace JobApplicationManagement.Controllers
             return View(accountModel);
         }
 
-        public IActionResult Inactivate(DeleteAccountModel model)
+        public IActionResult Inactivate(InactivateAccountModel model)
         {
             string? id = HttpContext.Session.GetString("currentId");
             if (id == null || Object.Equals(model.Id, id))
@@ -71,7 +71,7 @@ namespace JobApplicationManagement.Controllers
         }
 
 
-        public IActionResult Activate(UpdateAccountModel model)
+        public IActionResult Activate(ActivateAccountModel model)
         {
             Account account = _accountRepository.GetById(model.Id);
             if (account != null)
@@ -119,6 +119,62 @@ namespace JobApplicationManagement.Controllers
             _accountRepository.Insert(account);
             TempData["Success"] = "Add successfully";
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public IActionResult Update(AccountModel model)
+        {
+            Account? account = _accountRepository.GetById(model.Username);
+            if (account == null)
+            {
+                TempData["Error"] = "Account not found!";
+                return RedirectToAction(nameof(AddAccount));
+            }
+            account.Username = model.Username;
+            account.Email = model.Email;
+            account.FullName = model.FullName;
+            account.Phone = model.Phone;
+            account.IsRootAdmin = false;
+            account.Description = model.Description;
+            account.CreatedAt = DateTime.Now;
+            account.Status = AccountStatus.ACTIVE;
+
+            _accountRepository.Update(account);
+            TempData["Success"] = "Update successfully";
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult ChangePassword(ChangePasswordModel model)
+        {
+            if (!ModelState.IsValid || !Object.Equals(model.NewPassword, model.ConfirmPassword))
+            {
+                TempData["Error"] = "New Password and Confirm Password must be match";
+                return View(nameof(ChangePassword));
+            }
+            string? id = HttpContext?.Session?.GetString("currentId");
+
+            Account? account = _accountRepository.GetById(id);
+            if (account == null)
+            {
+                return View(nameof(ChangePassword));
+            }
+            if (!Object.Equals(model.OldPassword, account?.Password))
+            {
+
+                TempData["Error"] = "Old Password incorrect";
+                return View(nameof(ChangePassword));
+            }
+            account.Password = model.NewPassword;
+            _accountRepository.Update(account);
+            TempData["Success"] = "Update Successfully";
+            return View(nameof(ChangePassword));
         }
     }
 }
