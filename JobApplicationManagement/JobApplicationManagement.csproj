@@ -22,11 +22,10 @@
 
   <ItemGroup>
     <Folder Include="Models\Company\" />
-    <Folder Include="Models\JobDescription\" />
     <Folder Include="Models\Resume\" />
+    <Folder Include="Views\Auth\" />
     <Folder Include="Utils\" />
     <Folder Include="Views\Resume\" />
-    <Folder Include="Views\JobDecription\" />
   </ItemGroup>
 
   <ItemGroup>

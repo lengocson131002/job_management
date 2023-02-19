@@ -1,0 +1,144 @@
+﻿@using JobApplicationManagement.Models.JobDescription;
+@using JobApplicationManagement.Utils;
+@using Repository.Enums;
+@using Repository.Models;
+@using Repository.Utils;
+
+@{
+    var skills = ViewData["Skills"] as List<Skill>;
+}
+
+<div class="mb-5">
+    <form id="form-filter" asp-controller="JobDescription" asp-action="Index" method="post" class="form row mb-4 d-flex align-items-end">
+        <div class="col-md-3 mb-3">
+            <label for="filter-query" class="col-form-label">Search</label>
+            <div>
+                <input name="Query" class="form-control" type="search" id="filter-query" />
+            </div>
+        </div>
+
+        <div class="col-md-2 mb-3">
+            <label for="filter-type" class="col-form-label">Type</label>
+            <select class="form-select" asp-items="Html.GetEnumSelectList<JobType>()" id="filter-type">
+                <option>Choose job type</option>
+            </select>
+        </div>
+
+        <div class="col-md-2 mb-3">
+            <label for="filter-level" class="col-form-label">Level</label>
+            <select class="form-select" asp-items="Html.GetEnumSelectList<JobLevel>()" id="filter-level">
+                <option>Choose job level</option>
+            </select>
+        </div>
+
+        <div class="col-md-2 mb-3">
+            <label for="filter-skill" class="col-form-label">Skill</label>
+            <select class="w-100 form-select " id="filter-skill">
+                <option>Choose job skill</option>
+                @if (skills != null && skills.Count() > 0)
+                {
+                    foreach (var skill in skills)
+                    {
+                        if (Model?.SkillId == skill.Id)
+                        {
+                            <option selected value="@skill?.Id">@skill?.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@skill?.Id">@skill?.Name</option>
+                        }
+
+                    }
+                }
+            </select>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <input id="button-reset" class="btn btn-outline-danger" type="reset" />
+            <a class="btn btn-success" href="@Url.ActionLink("Create")">Create new job</a>
+        </div>
+    </form>
+
+    <div class="job-description-body flex-nowrap d-flex w-100">
+        <div id="job-list" class="flex-grow-1 me-4">
+        </div>
+        <div id="job-detail" class="flex-grow-1">
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+
+        $(() => {
+            $('#form-filter').on('submit', function (e) {
+                e.preventDefault();
+            });
+
+            getJobList(1);
+            getJobItem('@ViewData["SelectedId"]');
+
+            $('#filter-query').keyup(() => getJobList(1));
+            $('#filter-level').change(() => getJobList(1));
+            $('#filter-type').change(() => getJobList(1));
+            $('#filter-skill').change(() => getJobList(1));
+
+            $('#form-filter').on('reset', () => {
+                setTimeout(() => getJobList(1), 500);
+            });
+
+
+            $('#job-list').on('click', '#job-item', function () {
+                var id = $(this).data("job-id");
+                if (id) {
+                    getJobItem(id)
+                }
+            })
+
+        })
+
+        function getJobList(page) {
+            $.ajax({
+                url: '@Url.ActionLink("SearchJobDescriptions", "JobDescription")',
+                datatype: 'html',
+                method: 'GET',
+                data: {
+                    Query: $('#filter-query').val(),
+                    Level: $('#filter-level  option:selected').val(),
+                    Type: $('#filter-type option:selected').val(),
+                    SkillId: $('#filter-skill option:selected').val(),
+                    PageNumber: page
+                },
+                success: function (res) {
+                    $('#job-list').html('').html(res);
+                    $('#job-detail').html('');
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+
+            });
+        }
+
+        function getJobItem(id) {
+            $.ajax({
+                url: '@Url.ActionLink("GetJobDescription", "JobDescription")',
+                datatype: 'html',
+                method: 'GET',
+                data: { id: id },
+                success: function (res) {
+                    $('#job-detail').html('').html(res);
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+
+            });
+        }
+
+        function getPage(page) {
+            getJobList(page);
+        } 
+
+    </script>
+}

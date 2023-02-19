@@ -1,0 +1,113 @@
+﻿@using JobApplicationManagement.Utils;
+@using Repository.Models;
+@model JobDescription
+
+@if (Model != null)
+{
+    <div class="card mb-4 w-100" style="min-width: 600px">
+        <div class="card-body">
+            <div class="sticky-top bg-white w-100 pt-1">
+                <div class="d-flex justify-content-between">
+                    <h4 class="card-title text-primary">@Model.Title</h4>
+                    <div>
+                        <a href="@Url.Action("Update", "JobDescription", new { id = Model.Id})">
+                            <ion-icon name="create-outline" class="me-2 bg-label-warning p-1 rounded"></ion-icon>
+                        </a>
+                        <a href="@Url.Action("Delete", "JobDescription", new { id = Model.Id})" id="delete-job-button">
+                            <ion-icon name="trash-bin-outline" class="me-2 bg-label-danger p-1 rounded"></ion-icon>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="d-flex align-items-center mb-2">
+                        <ion-icon name="podium-outline" class="me-2 bg-label-primary p-1 rounded"></ion-icon>
+                        <div class="">@Model.Company?.Name</div>
+                    </div>
+
+                    <div class="d-flex align-items-center mb-2">
+                        <ion-icon name="pricetags-outline" class="me-2 bg-label-success p-1 rounded"></ion-icon>
+                        <div class="">
+                            <strong>@SalaryUtils.GetSalary(Model.MinSalary, Model.MaxSalary)</strong>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="d-flex align-items-center mb-2 col-6">
+                            <ion-icon name="alarm-outline" class="me-2 bg-label-secondary p-1 rounded"></ion-icon>
+                            <div class="">@Model.Type</div>
+                        </div>
+
+                        <div class="d-flex align-items-center mb-2 col-6">
+                            <ion-icon name="analytics-outline" class="me-2 bg-label-success p-1 rounded"></ion-icon>
+                            <div class="">@Model.Level</div>
+                        </div>
+                    </div>
+
+                    @if (Model?.RequiredNumber != null)
+                    {
+                        <div class="d-flex align-items-center mb-2">
+                            <ion-icon name="person-outline" class="me-2 bg-label-warning p-1 rounded"></ion-icon>
+                            <div class="">
+                                <strong>@Model?.RequiredNumber Employeers</strong>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="d-flex align-items-center mb-2">
+                        <ion-icon name="location-outline" class="me-2 bg-label-info p-1 rounded"></ion-icon>
+                        <div class="">@Model?.Company?.Address</div>
+                    </div>
+                    @if (Model?.ClosedAt != null)
+                    {
+                        <div class="d-flex align-items-center mb-2">
+                            <ion-icon name="calendar-outline" class="me-2 bg-label-danger p-1 rounded"></ion-icon>
+                            <div>Closed at: @Model.ClosedAt.Value.ToString("dd/MM/yyyy")</div>
+                        </div>
+                    }
+                </div>
+                <div class="my-4">
+                    @if (Model?.Skills?.Count > 0)
+                    {
+                        foreach (var skill in Model.Skills)
+                        {
+                            <span class="me-2 badge bg-label-primary">@skill.Name</span>
+                        }
+                    }
+
+                </div>
+                <hr />
+            </div>
+
+            <div>
+                <div class="mt-5">
+                    <h5>Job Description</h5>
+                </div>
+                <p class="card-text">
+                    @Model.Description
+                </p>
+
+                <button class="btn btn-primary my-4 d-flex align-items-center">
+                    <ion-icon name="people-outline" class="me-2"></ion-icon>Pick Resume
+                </button>
+
+            </div>
+
+            <hr />
+            <div>
+                <div class="mt-5">
+                    <h5>Company</h5>
+                </div>
+                <h6>@Model.Company?.Name</h6>
+                <p class="card-text">
+                    @Model.Company?.Description
+                </p>
+
+                <button class="btn btn-primary my-4 d-flex align-items-center">
+                    <ion-icon name="podium-outline" class="me-2"></ion-icon> About Company
+                </button>
+
+            </div>
+        </div>
+    </div>
+}
