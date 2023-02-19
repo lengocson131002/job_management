@@ -1,11 +1,36 @@
 ﻿@using Repository.Models;
-
+@using Repository.Enums;
 @model List<Account>
-
+@{
+    ViewData["Title"] = "Account Page";
+}
 <h1>Account page</h1>
+
+<a href="/Account/AddAccount">
+    <button type="button" class="btn btn-outline-primary">
+        <span class="tf-icons bx bx-pie-chart-alt"></span>&nbsp; Add Account
+    </button>
+</a>
+
 <table>
-
-
+    @{
+        if (@TempData["Error"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                @TempData["Error"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+    }
+    @{
+        if (@TempData["Success"] != null)
+        {
+            <div class="alert alert-success alert-dismissible" role="alert">
+                @TempData["Success"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+    }
     <!-- Hoverable Table rows -->
     <div class="card">
         <div class="table-responsive text-nowrap">
@@ -26,29 +51,58 @@
                     @foreach (var account in Model)
                     {
                         <tr>
-                        <tr>
                             <td> <strong>@account.Id</strong></td>
                             <td>@account.FullName</td>
                             <td>@account.Username</td>
                             <td>@account.Email</td>
                             <td>@account.Phone</td>
-                            <td><span class="badge bg-label-primary me-1">@account.Phone</span></td>
+                            <td>
+                                @{
+                                    if (Object.Equals(account.Status, AccountStatus.ACTIVE))
+                                    {
+                                        <span class="badge bg-label-primary me-1">@account.Status</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-label-danger me-1">@account.Status</span>
+                                    }
+                                }
+                            </td>
                             <td>
                                 <div class="dropdown">
                                     <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                                         <i class="bx bx-dots-vertical-rounded"></i>
                                     </button>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i> Edit</a>
-                                        <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>
+                                        <a class="dropdown-item" href="/AccountDetail/@account.Id"><i class="bx bx-edit-alt me-1"></i> Edit</a>
+                                        @{
+                                            if (Object.Equals(account.Status, AccountStatus.ACTIVE))
+                                            {
+                                                <form id="" asp-action="Inactivate" asp-controller="Account" class="mb-3" method="post">
+                                                    <input name="Id" value="@account.Id" hidden />
+                                                    <button class="dropdown-item" type="submit">
+                                                        <div class="text-danger"><i class="bx bx-trash me-1 text-danger"></i> Inactivate</div>
+                                                    </button>
+                                                </form>
+                                            }
+                                            else
+                                            {
+                                                <form id="" asp-action="Activate" asp-controller="Account" class="mb-3" method="post">
+                                                    <input name="Id" value="@account.Id" hidden />
+                                                    <button class="dropdown-item" type="submit">
+                                                        <div class="text-primary"><i class="bx bx-trash me-1 text-primary"></i> Activate</div>
+                                                    </button>
+                                                </form>
+                                            }
+                                        }
                                     </div>
                                 </div>
                             </td>
-                        </tr>
                         </tr>
                     }
                 </tbody>
             </table>
         </div>
     </div>
+
 </table>

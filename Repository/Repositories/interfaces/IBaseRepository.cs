@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repository.Repositories
+namespace Repository.Repositories.interfaces
 {
     public interface IBaseRepository<T> where T : class
     {
@@ -13,11 +13,11 @@ namespace Repository.Repositories
         T GetById(object id);
 
         void Insert(T obj);
-        
+
         void Update(T obj);
-        
+
         void Delete(object id);
-        
+
         void Save();
     }
 }

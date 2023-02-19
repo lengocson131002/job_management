@@ -12,8 +12,13 @@ using Repository;
 namespace Repository.Migrations
 {
     [DbContext(typeof(JobManagementDBContext))]
+<<<<<<<< HEAD:Repository/Migrations/20230216120054_V0-InitDatabase.Designer.cs
+    [Migration("20230216120054_V0-InitDatabase")]
+    partial class V0InitDatabase
+========
     [Migration("20230216132905_V1-Update database")]
     partial class V1Updatedatabase
+>>>>>>>> origin/develop:Repository/Migrations/20230216132905_V1-Update database.Designer.cs
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -292,6 +297,8 @@ namespace Repository.Migrations
                     b.ToTable("Resume");
                 });
 
+<<<<<<<< HEAD:Repository/Migrations/20230216120054_V0-InitDatabase.Designer.cs
+========
             modelBuilder.Entity("Repository.Models.ResumeSkill", b =>
                 {
                     b.Property<long>("Id")
@@ -315,6 +322,7 @@ namespace Repository.Migrations
                     b.ToTable("Resume_Skill");
                 });
 
+>>>>>>>> origin/develop:Repository/Migrations/20230216132905_V1-Update database.Designer.cs
             modelBuilder.Entity("Repository.Models.Skill", b =>
                 {
                     b.Property<long>("Id")
@@ -426,6 +434,8 @@ namespace Repository.Migrations
                         .HasForeignKey("JobDescriptionId");
                 });
 
+<<<<<<<< HEAD:Repository/Migrations/20230216120054_V0-InitDatabase.Designer.cs
+========
             modelBuilder.Entity("Repository.Models.ResumeSkill", b =>
                 {
                     b.HasOne("Repository.Models.Resume", "Resume")
@@ -445,6 +455,7 @@ namespace Repository.Migrations
                     b.Navigation("Skill");
                 });
 
+>>>>>>>> origin/develop:Repository/Migrations/20230216132905_V1-Update database.Designer.cs
             modelBuilder.Entity("Repository.Models.Skill", b =>
                 {
                     b.HasOne("Repository.Models.JobDescription", null)

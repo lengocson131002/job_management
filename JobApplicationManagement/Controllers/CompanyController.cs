@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using JobApplicationManagement.Filters;
+using Microsoft.AspNetCore.Mvc;
 using Repository.Models;
-using Repository.Repositories;
+using Repository.Repositories.interfaces;
 
 namespace JobApplicationManagement.Controllers
 {
+    [TypeFilter(typeof(AuthorizationFilter))]
     public class CompanyController : Controller
     {
 
