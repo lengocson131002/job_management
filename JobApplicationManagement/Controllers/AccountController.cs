@@ -3,6 +3,7 @@ using JobApplicationManagement.Models.Auth;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Enums;
 using Repository.Models;
+using Repository.Repositories;
 using Repository.Repositories.interfaces;
 
 namespace JobApplicationManagement.Controllers
@@ -124,22 +125,35 @@ namespace JobApplicationManagement.Controllers
         [HttpPost]
         public IActionResult Update(AccountModel model)
         {
-            Account? account = _accountRepository.GetById(model.Username);
+            Account? account = _accountRepository.GetByUsername(model.Username);
             if (account == null)
             {
                 TempData["Error"] = "Account not found!";
                 return RedirectToAction(nameof(AddAccount));
             }
-            account.Username = model.Username;
-            account.Email = model.Email;
-            account.FullName = model.FullName;
-            account.Phone = model.Phone;
-            account.IsRootAdmin = false;
-            account.Description = model.Description;
-            account.CreatedAt = DateTime.Now;
-            account.Status = AccountStatus.ACTIVE;
-
+            if (!String.IsNullOrEmpty(model.Email))
+            {
+                account.Email = model.Email;
+            }
+            if (!String.IsNullOrEmpty(model.FullName))
+            {
+                account.FullName = model.FullName;
+            }
+            if (!String.IsNullOrEmpty(model.Phone))
+            {
+                account.Phone = model.Phone;
+            }
+            if (!String.IsNullOrEmpty(model.Description))
+            {
+                account.Description = model.Description;
+            }
             _accountRepository.Update(account);
+
+            if (Object.Equals(account.Id, HttpContext.Session.GetString("currentId")))
+            {
+                HttpContext.Session.SetString("currentName", model.FullName);
+            }
+
             TempData["Success"] = "Update successfully";
             return RedirectToAction(nameof(Index));
         }
@@ -175,6 +189,83 @@ namespace JobApplicationManagement.Controllers
             _accountRepository.Update(account);
             TempData["Success"] = "Update Successfully";
             return View(nameof(ChangePassword));
+        }
+
+        [HttpGet]
+        public IActionResult MyAccount()
+        {
+            string? id = HttpContext.Session.GetString("currentId");
+            if (id == null)
+            {
+                TempData["Error"] = "Account not found";
+
+            }
+            Account account = _accountRepository.GetById(id);
+            if (account == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            AccountModel accountModel = new AccountModel()
+            {
+                Id = account.Id,
+                Description = account.Description,
+                FullName = account.FullName,
+                Username = account.Username,
+                Email = account.Email,
+                Phone = account.Phone,
+                Status = account.Status,
+                IsRootAdmin = account.IsRootAdmin
+            };
+
+
+            return View(accountModel);
+        }
+        [HttpPost]
+        public IActionResult UpdateMyAccount(AccountModel model)
+        {
+            Account? account = _accountRepository.GetByUsername(model.Username);
+            if (account == null)
+            {
+                TempData["Error"] = "Account not found!";
+                return RedirectToAction(nameof(MyAccount));
+            }
+            if (!String.IsNullOrEmpty(model.Email))
+            {
+                account.Email = model.Email;
+            }
+            if (!String.IsNullOrEmpty(model.FullName))
+            {
+                account.FullName = model.FullName;
+            }
+            if (!String.IsNullOrEmpty(model.Phone))
+            {
+                account.Phone = model.Phone;
+            }
+            if (!String.IsNullOrEmpty(model.Description))
+            {
+                account.Description = model.Description;
+            }
+            _accountRepository.Update(account);
+
+            if (Object.Equals(account.Id, HttpContext.Session.GetString("currentId")))
+            {
+                HttpContext.Session.SetString("currentName", model.FullName);
+            }
+
+            TempData["Success"] = "Update successfully";
+            return RedirectToAction(nameof(MyAccount));
+        }
+        [HttpGet]
+        public PartialViewResult GetAccounts(GetAccountsModel model)
+        {
+            var jobsPageResult = _accountRepository
+               .GetAll(model.Query, model.Status, model.PageNumber, model.PageSize);
+
+            ViewData["PageNumber"] = model.PageNumber;
+            ViewData["TotalPages"] = (int)Math.Ceiling(jobsPageResult.TotalItems * 1.0 / model.PageSize);
+
+            List<Account> accounts = jobsPageResult.Items;
+            return PartialView("_AccountListView", accounts);
         }
     }
 }
