@@ -33,6 +33,11 @@ namespace JobApplicationManagement
             builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             builder.Services.AddTransient(typeof(JobDescriptionRepository), typeof(JobDescriptionRepository));
+            builder.Services.AddTransient(typeof(ResumeRepository), typeof(ResumeRepository));
+            builder.Services.AddTransient(typeof(ContractRepository), typeof(ContractRepository));
+
+            builder.Services.AddControllersWithViews()
+                .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             var app = builder.Build();
 

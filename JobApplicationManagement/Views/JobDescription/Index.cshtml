@@ -6,6 +6,7 @@
 
 @{
     var skills = ViewData["Skills"] as List<Skill>;
+    var companies = ViewData["Companies"] as List<Company>;
 }
 
 <div class="mb-5">
@@ -54,7 +55,29 @@
         </div>
 
         <div class="col-md-3 mb-3">
-            <input id="button-reset" class="btn btn-outline-danger" type="reset" />
+            <label for="filter-company" class="col-form-label">Company</label>
+            <select class="w-100 form-select " id="filter-company">
+                <option>Choose company</option>
+                @if (companies != null && companies.Count() > 0)
+                {
+                    foreach (var company in companies)
+                    {
+                        if (Model?.CompanyId == company.Id)
+                        {
+                            <option selected value="@company?.Id">@company?.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@company?.Id">@company?.Name</option>
+                        }
+
+                    }
+                }
+            </select>
+        </div>
+
+        <div class="mb-3 ms-auto me-auto d-flex justify-content-center">
+            <input id="button-reset" class="btn btn-outline-danger me-2" type="reset" />
             <a class="btn btn-success" href="@Url.ActionLink("Create")">Create new job</a>
         </div>
     </form>
@@ -69,6 +92,7 @@
 
 @section Scripts {
     <script>
+        const FIRST_PAGE = 1;
 
         $(() => {
             $('#form-filter').on('submit', function (e) {
@@ -78,13 +102,14 @@
             getJobList(1);
             getJobItem('@ViewData["SelectedId"]');
 
-            $('#filter-query').keyup(() => getJobList(1));
-            $('#filter-level').change(() => getJobList(1));
-            $('#filter-type').change(() => getJobList(1));
-            $('#filter-skill').change(() => getJobList(1));
+            $('#filter-query').keyup(() => getJobList(FIRST_PAGE));
+            $('#filter-level').change(() => getJobList(FIRST_PAGE));
+            $('#filter-type').change(() => getJobList(FIRST_PAGE));
+            $('#filter-skill').change(() => getJobList(FIRST_PAGE));
+            $('#filter-company').change(() => getJobList(FIRST_PAGE));
 
             $('#form-filter').on('reset', () => {
-                setTimeout(() => getJobList(1), 500);
+                setTimeout(() => getJobList(FIRST_PAGE, 500));
             });
 
 
@@ -107,6 +132,7 @@
                     Level: $('#filter-level  option:selected').val(),
                     Type: $('#filter-type option:selected').val(),
                     SkillId: $('#filter-skill option:selected').val(),
+                    CompanyId: $('#filter-company option:selected').val(),
                     PageNumber: page
                 },
                 success: function (res) {
