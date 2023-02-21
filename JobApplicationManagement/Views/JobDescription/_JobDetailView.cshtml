@@ -49,7 +49,7 @@
                         <div class="d-flex align-items-center mb-2">
                             <ion-icon name="person-outline" class="me-2 bg-label-warning p-1 rounded"></ion-icon>
                             <div class="">
-                                <strong>@Model?.RequiredNumber Employeers</strong>
+                                <strong>Target: @Model?.RequiredNumber</strong>
                             </div>
                         </div>
                     }
@@ -81,15 +81,11 @@
 
             <div>
                 <div class="mt-5">
-                    <h5>Job Description</h5>
+                    <h5>Description</h5>
                 </div>
                 <p class="card-text">
-                    @Model.Description
+                    @Model?.Description
                 </p>
-
-                <button class="btn btn-primary my-4 d-flex align-items-center">
-                    <ion-icon name="people-outline" class="me-2"></ion-icon>Pick Resume
-                </button>
 
             </div>
 

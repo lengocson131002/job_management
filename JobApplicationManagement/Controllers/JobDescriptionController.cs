@@ -7,30 +7,37 @@ using Repository.Repositories.interfaces;
 
 namespace JobApplicationManagement.Controllers
 {
-    [TypeFilter(typeof(AuthorizationFilter))]
+    //[TypeFilter(typeof(AuthorizationFilter))]
     public class JobDescriptionController : Controller
     {
         private readonly ILogger<JobDescriptionController> _logger;
         private JobDescriptionRepository _jobDescriptionRepository;
         private IBaseRepository<Company> _companyResposiotory;
         private IBaseRepository<Skill> _skillResposiotory;
+        private ResumeRepository _resumeRepository;
 
         public JobDescriptionController(JobDescriptionRepository jobDescriptionRepository,
             IBaseRepository<Company> companyResposiotory,
             IBaseRepository<Skill> skillResposiotory,
-            ILogger<JobDescriptionController> logger)
+            ILogger<JobDescriptionController> logger,
+            ResumeRepository resumeRepository)
         {
             _jobDescriptionRepository = jobDescriptionRepository;
             _companyResposiotory = companyResposiotory;
             _skillResposiotory = skillResposiotory;
             _logger = logger;
+            _resumeRepository = resumeRepository;
         }
 
         [HttpGet]
         public IActionResult Index()
         {
             var skills = _skillResposiotory.GetAll();
+            var companies = _companyResposiotory.GetAll();
+
             ViewData["Skills"] = skills;
+            ViewData["Companies"] = companies;
+
             return View();
         }
 
@@ -244,6 +251,25 @@ namespace JobApplicationManagement.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet]
+        public IActionResult ViewDetail(long id)
+        {
+            var job = _jobDescriptionRepository.GetById(id);
+            if (job == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["Resumes"] = _resumeRepository.GetBySkills(job.Skills.Select(skill => skill.Id).ToList());
+
+            return View(job);
+        }
+
+        [HttpGet]
+        public IActionResult ChooseResume(long id, long resumeId)
+        {
+            return View();
+        }
     }
 
 

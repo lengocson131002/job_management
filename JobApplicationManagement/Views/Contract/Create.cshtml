@@ -1,0 +1,129 @@
+﻿@using JobApplicationManagement.Models.Contract;
+@model CreateContractModel
+
+@if (Model != null)
+{
+    <div class="card mb-5">
+        <div class="card-header">
+            <h5 class="card-title" id="exampleModalLabel">Create contract</h5>
+        </div>
+        <div class="card-body">
+            <form asp-action="Create" asp-controller="Contract" method="post">
+
+                @Html.HiddenFor(m => m.CompanyId)
+                @Html.HiddenFor(m => m.CompanyName)
+                @Html.HiddenFor(m => m.ResumeId)
+                @Html.HiddenFor(m => m.ResumeName)
+
+                <div class="mb-3">
+                    <label class="form-label" for="form-contract-company">Company</label>
+                    <div class="input-group input-group-merge">
+                        <span id="form-contract-company2" class="input-group-text">
+                            <ion-icon name="podium-outline" style="font-size: 16px"></ion-icon>
+                        </span>
+                        <input type="text"
+                           class="form-control"
+                           disabled
+                           asp-for="@Model.CompanyName"
+                           id="form-contract-company" />
+                        <a class="btn btn-outline-primary" href="@Url.Action("ViewDetail", "Company", new {id = Model.CompanyId})">
+                            Detail
+                        </a>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="form-contract-candidate">Candidate</label>
+                    <div class="input-group input-group-merge">
+                        <span id="form-contract-candidate" class="input-group-text">
+                            <ion-icon name="person-outline" style="font-size: 16px"></ion-icon>
+                        </span>
+                        <input type="text"
+                           class="form-control"
+                           disabled
+                           asp-for="@Model.ResumeName"
+                           id="form-contract-candidate" />
+                        <a class="btn btn-outline-primary" href="@Url.Action("ViewDetail", "Resume", new {id = Model.ResumeId})">
+                            Detail
+                        </a>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="form-contract-time">Interview time</label>
+                    <div class="input-group input-group-merge">
+                        <span id="form-contract-time" class="input-group-text">
+                            <ion-icon name="alarm-outline" style="font-size: 16px"></ion-icon>
+                        </span>
+                        <input type="datetime-local"
+                           id="form-contract-time"
+                           asp-for="@Model.InterviewTime"
+                           class="form-control" />
+                        <span asp-validation-for="InterviewTime" class="text-danger mt-1 d-block invalid-feedback"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="form-contract-interviewer">Interviewer</label>
+                    <div class="input-group input-group-merge">
+                        <span id="form-contract-interviewer" class="input-group-text">
+                            <ion-icon name="people-circle-outline" style="font-size: 16px"></ion-icon>
+                        </span>
+                        <input type="text"
+                           asp-for="@Model.Interviewer"
+                           id="form-contract-interviewer"
+                           class="form-control" />
+                        <span asp-validation-for="Interviewer" class="text-danger mt-1 d-block invalid-feedback"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="form-contract-offer-salary">Offer Salary</label>
+                    <div class="input-group input-group-merge">
+                        <span id="form-contract-offer-salary" class="input-group-text">
+                            <ion-icon name="wallet-outline" style="font-size: 16px"></ion-icon>
+                        </span>
+                        <input type="number"
+                           min="1"
+                           asp-for="@Model.OfferSalary"
+                           id="form-contract-offer-salary"
+                           class="form-control" />
+                                 <span asp-validation-for="OfferSalary" class="text-danger mt-1 d-block invalid-feedback"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="form-contract-request-salary">Request salary</label>
+                    <div class="input-group input-group-merge">
+                        <span id="form-contract-request-salary" class="input-group-text">
+                            <ion-icon name="wallet-outline" style="font-size: 16px"></ion-icon>
+                        </span>
+                        <input type="number"
+                           min="1"
+                           asp-for="@Model.RequestSalary"
+                           id="form-contract-request-salary"
+                           class="form-control" />
+                        <span asp-validation-for="RequestSalary" class="text-danger mt-1 d-block invalid-feedback"></span>
+                    </div>
+                </div>
+
+
+                <div class="mb-3">
+                    <label class="form-label" for="form-contract-descriptio">Description</label>
+                    <div class="input-group input-group-merge">
+                        <span id="form-contract-descriptio2" class="input-group-text">
+                            <i class="bx bx-comment"></i>
+                        </span>
+                        <textarea id="form-contract-descriptio"
+                              class="form-control"
+                            placeholder="Description"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create contract</button>
+                </div>
+            </form>
+        </div>
+    </div>
+}
