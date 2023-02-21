@@ -20,7 +20,7 @@
     <!-- Country list data-->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="//unpkg.com/bootstrap-select-country@4.0.0/dist/js/bootstrap-select-country.min.js"></script>
-    
+
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="~/img/favicon/favicon.ico" />
 
@@ -78,13 +78,13 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li>
-                            <a class="dropdown-item" href="/Account/AccountDetail/@id">
+                            <a class="dropdown-item" href="@Url.Action("MyAccount", "Account")">
                                 <i class="bx bxs-user-detail me-2"></i>
                                 <span class="align-middle">My Profile</span>
                             </a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="/Account/ChangePassword">
+                            <a class="dropdown-item" href="@Url.Action("ChangePassword", "Account")">
                                 <i class="bx bx-key me-2"></i>
                                 <span class="align-middle">Change Password</span>
                             </a>
@@ -110,7 +110,7 @@
             @{
                 if (@TempData["Error"] != null)
                 {
-                    <div class="alert alert-danger alert-dismissible" role="alert">
+                    <div class="alert alert-danger alert-dismissible zindex-1" role="alert">
                         @TempData["Error"]
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
@@ -119,7 +119,7 @@
             @{
                 if (@TempData["Success"] != null)
                 {
-                    <div class="alert alert-success alert-dismissible" role="alert">
+                    <div class="alert alert-success alert-dismissible zindex-1" role="alert">
                         @TempData["Success"]
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>

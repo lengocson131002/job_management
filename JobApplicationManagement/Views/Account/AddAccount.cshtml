@@ -21,11 +21,10 @@
                             </span>
                             <input type="text"
                                    class="form-control"
-                                   name="FullName"
                                    id="basic-icon-default-fullname"
                                    placeholder="Full Name"
                                    aria-label="Full Name"
-                                   value="@Model?.FullName"
+                                   asp-for="@Model.FullName"
                                    aria-describedby="basic-icon-default-fullname2" />
                         </div>
                         <span asp-validation-for="FullName" class="text-danger"></span>
@@ -41,9 +40,8 @@
                             <input type="text"
                                    id="basic-icon-default-company"
                                    class="form-control"
-                                   name="Username"
                                    placeholder="Username"
-                                   value="@Model?.Username"
+                                   asp-for="@Model.Username"
                                    aria-label="Username"
                                    aria-describedby="basic-icon-default-company2" />
                         </div>
@@ -62,7 +60,7 @@
                                    class="form-control phone-mask"
                                    placeholder="Password"
                                    aria-label="Password"
-                                   name="Password"
+                                   asp-for="@Model.Password"
                                    aria-describedby="basic-icon-default-phone2" />
                         </div>
                         <span asp-validation-for="Password" class="text-danger"></span>
@@ -76,11 +74,10 @@
                             <span class="input-group-text"><i class="bx bx-envelope"></i class="text-danger"></span>
                             <input type="text"
                                    id="basic-icon-default-email"
-                                   name="Email"
                                    class="form-control"
                                    placeholder="Email"
                                    aria-label="Email"
-                                   value="@Model?.Email"
+                                   asp-for="@Model.Email"
                                    aria-describedby="basic-icon-default-email2" />
                         </div>
                         <span asp-validation-for="Email" class="text-danger"></span>
@@ -99,8 +96,7 @@
                                    class="form-control phone-mask"
                                    placeholder="Phone Number"
                                    aria-label="Phone Number"
-                                   name="Phone"
-                                   value="@Model?.Phone"
+                                   asp-for="@Model.Phone"
                                    aria-describedby="basic-icon-default-phone2" />
                         </div>
                         <span asp-validation-for="Phone" class="text-danger"></span>
@@ -117,7 +113,7 @@
                             <textarea id="basic-icon-default-message"
                                       class="form-control"
                                       placeholder="Description"
-                                      name="Description"
+                                      tion"
                                       aria-label="Description"
                                       aria-describedby="basic-icon-default-message2"></textarea>
                         </div>
