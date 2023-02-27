@@ -21,7 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Company\" />
     <Folder Include="Models\Resume\" />
     <Folder Include="Views\Auth\" />
     <Folder Include="Utils\" />

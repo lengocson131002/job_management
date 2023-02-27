@@ -17,14 +17,14 @@ namespace Repository.Repositories
         {
         }
 
-        public Account? GetByUsername(String username)
+        public Account? GetByUsername(string username)
         {
             if (username == null)
             {
                 return null;
             }
 
-            return table.Where<Account>(a => a.Username == username).FirstOrDefault();
+            return table.Where(a => a.Username == username).FirstOrDefault();
         }
 
         public PageResult<Account> GetAll(

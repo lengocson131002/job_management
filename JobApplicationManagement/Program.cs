@@ -30,6 +30,7 @@ namespace JobApplicationManagement
             // Define DI for repository
             builder.Services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             builder.Services.AddScoped(typeof(IAccountRepository), typeof(AccountRepository));
+            builder.Services.AddScoped(typeof(ICompanyRepository), typeof(CompanyRepository));
             builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             builder.Services.AddTransient(typeof(JobDescriptionRepository), typeof(JobDescriptionRepository));

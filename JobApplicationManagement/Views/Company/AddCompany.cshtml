@@ -1,6 +1,6 @@
-﻿@using Repository.Models;
+﻿@using JobApplicationManagement.Models.Company
 
-@model Company;
+@model CreateCompanyModel;
 
 <div class="card company-detail-container p-4">
     <div class="card-header">
@@ -8,8 +8,6 @@
     </div>
     <div class="card-body">
         <form asp-controller="Company" asp-action="CreateCompany">
-            <input type="hidden" asp-for="Id" />
-            <input type="hidden" asp-for="CreatedAt" />
             <div class="d-flex gap-5 mb-3">
                 <div class="flex-fill">
                     <label class="form-label" for="basic-icon-default-company">Company</label>
@@ -128,6 +126,7 @@
                 </div>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
+            <div asp-validation-summary="All"></div>
             <button type="submit" class="btn btn-primary">Create</button>
         </form>
     </div>
