@@ -1,17 +1,18 @@
 ﻿using JobApplicationManagement.Filters;
+using JobApplicationManagement.Models.Company;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Models;
+using Repository.Repositories;
 using Repository.Repositories.interfaces;
+using System.Diagnostics;
 
 namespace JobApplicationManagement.Controllers
 {
     [TypeFilter(typeof(AuthorizationFilter))]
     public class CompanyController : Controller
     {
-
-        private IBaseRepository<Company> _companyRepository;
-        
-        public CompanyController(IBaseRepository<Company> companyRepository)
+        private ICompanyRepository _companyRepository;
+        public CompanyController(ICompanyRepository companyRepository)
         {
             _companyRepository = companyRepository;
         }
@@ -21,40 +22,140 @@ namespace JobApplicationManagement.Controllers
             List<Company> companies = _companyRepository.GetAll().ToList();
             return View(companies);
         }
+
+        [HttpGet]
         public IActionResult CompanyDetail(long id)
         {
             Company company = _companyRepository.GetById(id);
-            return View(company);
+            if (company == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            UpdateCompanyModel model = new UpdateCompanyModel()
+            {
+                Id = company.Id,
+                Name = company.Name,
+                Email = company.Email,
+                Phone = company.Phone,
+                Address = company.Address,
+                Country = company.Country,
+                Longitude = 0,
+                Latitude = 0,
+                MinScale = company.MinScale,
+                MaxScale = company.MaxScale,
+                Description = company.Description,
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult UpdateCompany(UpdateCompanyModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("UpdateCompany", model);
+            }
+            var company = _companyRepository.GetById(model.Id);
+            if (company == null)
+            {
+                TempData["Error"] = "Company Name not found!";
+                return RedirectToAction(nameof(UpdateCompany));
+            }
+
+            company.Name = model.Name;
+            company.Email = model.Email;
+            company.Phone = model.Phone;
+            company.Address = model.Address;
+            company.Country = model.Country;
+            company.Longitude = 0;
+            company.Latitude = 0;
+            company.MinScale = model.MinScale;
+            company.MaxScale = model.MaxScale;
+            company.Description = model.Description;
+
+            _companyRepository.Update(company);
+            _companyRepository.Save();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult DeleteCompany(long id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            Company company = _companyRepository.GetById(id);
+            if (company != null)
+            {
+                _companyRepository.Delete(id);
+                _companyRepository.Save();
+                return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction(nameof(Index));
         }
         public IActionResult AddCompany()
         {
             return View();
         }
 
-        public IActionResult CreateCompany(Company company)
+        [HttpPost]
+        public IActionResult CreateCompany(CreateCompanyModel model)
         {
             if (!ModelState.IsValid)
             {
-                return View("AddCompany", company);
+                return View("AddCompany", model);
             }
-            company.Longitude = 0;
-            company.Latitude = 0;
-            company.CreatedAt = DateTime.Now;
+            Company? company = _companyRepository.GetByName(model.Name);
+            if (company != null)
+            {
+                TempData["Error"] = "Existed Company Name";
+                return RedirectToAction(nameof(AddCompany));
+            }
+            Company? company1 = _companyRepository.GetByEmail(model.Email);
+            if (company1 != null)
+            {
+                TempData["Error"] = "Existed Company Email";
+                return RedirectToAction(nameof(AddCompany));
+            }
+            if (model.MinScale > model.MaxScale)
+            {
+                TempData["Error"] = "Max value must be greater than min value!";
+                return RedirectToAction(nameof(AddCompany));
+
+            }
+            company = new Company()
+            {
+                Name = model.Name,
+                Email = model.Email,
+                Phone = model.Phone,
+                Address = model.Address,
+                Country = model.Country,
+                Longitude = 0,
+                Latitude = 0,
+                MinScale = model.MinScale,
+                MaxScale = model.MaxScale,
+                Description = model.Description,
+            };
+
             _companyRepository.Insert(company);
             _companyRepository.Save();
-
-
+            TempData["Success"] = "Add successfully";
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult UpdateCompany(Company company)
+        [HttpGet]
+        public PartialViewResult GetCompany(GetAllCompanyModel model)
         {
-            company.Longitude = 0;
-            company.Latitude = 0;
-            company.ModifiedAt = DateTime.Now;
-            _companyRepository.Update(company);
-            _companyRepository.Save();
-            return RedirectToAction(nameof(Index));
+            var companysPageResult = _companyRepository
+               .GetAll(model.Query, model.PageNumber, model.PageSize);
+
+            ViewData["PageNumber"] = model.PageNumber;
+            ViewData["TotalPages"] = (int)Math.Ceiling(companysPageResult.TotalItems * 1.0 / model.PageSize);
+
+            List<Company> company = companysPageResult.Items;
+            return PartialView("_CompanyListView", company);
         }
+
+
     }
 }

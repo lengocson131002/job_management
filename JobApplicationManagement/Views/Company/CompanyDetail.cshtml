@@ -1,6 +1,6 @@
-﻿@using Repository.Models;
+﻿@using JobApplicationManagement.Models.Company
 
-@model Company;
+@model UpdateCompanyModel;
 
 <div class="card company-detail-container p-4">
     <div class="card-header">
@@ -9,7 +9,6 @@
     <div class="card-body">
         <form asp-controller="Company" asp-action="UpdateCompany">
             <input type="hidden" asp-for="Id" />
-            <input type="hidden" asp-for="CreatedAt" />
             <div class="d-flex gap-5 mb-3">
                 <div class="flex-fill">
                     <label class="form-label" for="basic-icon-default-company">Company</label>
@@ -24,7 +23,7 @@
                                placeholder="ACME Inc."
                                aria-label="ACME Inc."
                                aria-describedby="basic-icon-default-company2" value=@Model.Name />
-                               
+
                     </div>
                 </div>
                 <div class="flex-fill">
@@ -32,7 +31,7 @@
                     <div class="input-group input-group-merge">
                         <span class="input-group-text"><i class="bx bx-envelope"></i></span>
                         <input type="text"
-                                asp-for="Email"
+                               asp-for="Email"
                                id="basic-icon-default-email"
                                class="form-control"
                                placeholder="john.doe"
@@ -49,7 +48,7 @@
                             <i class="bx bx-phone"></i>
                         </span>
                         <input type="text"
-                        asp-for="Phone"
+                               asp-for="Phone"
                                id="basic-icon-default-phone"
                                class="form-control phone-mask"
                                placeholder="658 799 8941"
@@ -65,7 +64,7 @@
                             <span id="basic-icon-default-company2" class="input-group-text">
                                 <i class='bx bxs-user'></i>
                             </span>
-                             <input asp-for="MinScale" class="form-control" type="number" value="18" id="html5-number-input-min" value=@Model.MinScale />
+                            <input asp-for="MinScale" class="form-control" type="number" value="18" id="html5-number-input-min" value=@Model.MinScale />
                         </div>
                     </div>
                     <div class="">
@@ -87,12 +86,12 @@
                             <i class='bx bxs-city'></i>
                         </span>
                         <input type="text"
-                        asp-for="Address"
+                               asp-for="Address"
                                id="basic-icon-default-address"
                                class="form-control"
                                placeholder="ACME Inc."
                                aria-label="ACME Inc."
-                               aria-describedby="basic-icon-default-address" value=@Model.Address/>
+                               aria-describedby="basic-icon-default-address" value=@Model.Address />
                     </div>
                 </div>
                 <div class="w-50 flex-fill">
@@ -116,12 +115,13 @@
                               aria-describedby="basic-icon-default-message2">@Model.Description</textarea>
                 </div>
             </div>
+            <div asp-validation-summary="All"></div>
             <button type="submit" class="btn btn-primary">Update</button>
         </form>
     </div>
 </div>
 
 
-  <script>
+<script>
     $('.countrypicker').countrypicker();
-  </script>
+</script>
