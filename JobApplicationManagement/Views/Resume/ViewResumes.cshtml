@@ -1,0 +1,57 @@
+﻿@using JobApplicationManagement.Utils;
+@using Repository.Models;
+@model List<Resume>;
+
+@{
+    var totalPages = ViewData["TotalPages"] as int?;
+    var pageNumber = ViewData["PageNumber"] as int?;
+    var selectedId = ViewData["SelectedId"] as long?;
+}
+
+<h1>Resume</h1>
+<div class="card">
+    <h5 class="card-header">Resume Management</h5>
+    <form id="" asp-action="CreateResume" asp-controller="Resume" class="mb-3" method="get">
+        <button class="btn btn-primary" type="submit">
+            New
+        </button>
+    </form>
+    <div class="table-responsive text-nowrap">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Applicants</th>
+                    <th>Last Modified At</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+                @foreach (var resume in Model) {
+                    <tr>
+                        <td>@resume.Id</td>
+                        <td>
+                            <a href="@Url.Action("ViewDetailResume", "Resume",  new { id = resume.Id})"><span>@resume.Name</span></a>
+                         
+                        </td>
+                        <td>@resume.ModifiedAt</td>
+                        <td><span class="badge bg-label-warning me-1">Pending</span></td>
+                        <td>
+                            <div class="dropdown">
+                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="@Url.Action("UpdateResume", "Resume",  new { id = resume.Id})"><i class="bx bx-edit-alt me-2"></i> Edit</a>
+                                    <a class="dropdown-item" href="@Url.Action("DeleteResume", "Resume",  new { id = resume.Id})"><i class="bx bx-trash me-2"></i> Delete</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                
+            </tbody>
+        </table>
+    </div>
+</div>

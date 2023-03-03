@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Repository.Models;
+using Repository.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,36 @@ namespace Repository.Repositories
                 .Where(res => res.Skills.Any(skill => skillIds.Contains(skill.Id)))
                 .Include(res => res.Skills)
                 .ToList();
+        }
+
+        public Resume? GetById(long id)
+        {
+            return this.table
+                .Where(resume => resume.Id == id)
+                .Include(resume => resume.Skills)
+                .FirstOrDefault();
+        }
+
+        public PageResult<Resume> GetAll(
+            int pageNumber,
+            int pageSize)
+        {
+            IQueryable<Resume> query = this.table
+                .OrderByDescending(resume => resume.CreatedAt);
+
+            int totalItems = query.Count();
+
+            query = query.Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .Include(resume => resume.Skills);
+
+            return new PageResult<Resume>
+            {
+                TotalItems = totalItems,
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                Items = query.ToList()
+            };
         }
     }
 }
