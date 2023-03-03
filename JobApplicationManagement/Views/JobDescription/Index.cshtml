@@ -77,8 +77,10 @@
         </div>
 
         <div class="mb-3 ms-auto me-auto d-flex justify-content-center">
-            <input id="button-reset" class="btn btn-outline-danger me-2" type="reset" />
-            <a class="btn btn-success" href="@Url.ActionLink("Create")">Create new job</a>
+            <button id="btn-reset" type="reset" class="btn btn-outline-danger me-2">
+                <span class="tf-icons bx bx-reset"></span>&nbsp; Reset
+            </button>
+            <a class="btn btn-primary" href="@Url.ActionLink("Create")">Create new job</a>
         </div>
     </form>
 

@@ -26,7 +26,7 @@
                            disabled
                            asp-for="@Model.CompanyName"
                            id="form-contract-company" />
-                        <a class="btn btn-outline-primary" href="@Url.Action("ViewDetail", "Company", new {id = Model.CompanyId})">
+                        <a class="btn btn-outline-primary" href="@Url.Action("CompanyDetail", "Company", new {id = Model.CompanyId})">
                             Detail
                         </a>
                     </div>
