@@ -8,7 +8,7 @@ using Repository.Repositories.interfaces;
 
 namespace JobApplicationManagement.Controllers
 {
-    //[TypeFilter(typeof(AuthorizationFilter))]
+    [TypeFilter(typeof(AuthorizationFilter))]
     public class ResumeController : Controller
     {
         private ResumeRepository _resumeRepository;

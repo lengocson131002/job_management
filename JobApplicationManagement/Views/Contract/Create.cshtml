@@ -8,7 +8,7 @@
             <h5 class="card-title" id="exampleModalLabel">Create contract</h5>
         </div>
         <div class="card-body">
-            <form asp-action="Create" asp-controller="Contract" method="post">
+            <form class="form" asp-action="Create" asp-controller="Contract" method="post">
 
                 @Html.HiddenFor(m => m.CompanyId)
                 @Html.HiddenFor(m => m.CompanyName)
@@ -26,7 +26,7 @@
                            disabled
                            asp-for="@Model.CompanyName"
                            id="form-contract-company" />
-                        <a class="btn btn-outline-primary" href="@Url.Action("ViewDetail", "Company", new {id = Model.CompanyId})">
+                        <a class="btn btn-outline-primary" href="@Url.Action("CompanyDetail", "Company", new {id = Model.CompanyId})">
                             Detail
                         </a>
                     </div>
@@ -43,7 +43,7 @@
                            disabled
                            asp-for="@Model.ResumeName"
                            id="form-contract-candidate" />
-                        <a class="btn btn-outline-primary" href="@Url.Action("ViewDetail", "Resume", new {id = Model.ResumeId})">
+                        <a class="btn btn-outline-primary" href="@Url.Action("ViewDetailResume", "Resume", new {id = Model.ResumeId})">
                             Detail
                         </a>
                     </div>
@@ -88,7 +88,10 @@
                            asp-for="@Model.OfferSalary"
                            id="form-contract-offer-salary"
                            class="form-control" />
-                                 <span asp-validation-for="OfferSalary" class="text-danger mt-1 d-block invalid-feedback"></span>
+                        <span id="form-contract-time" class="input-group-text">
+                            $
+                        </span>
+                        <span asp-validation-for="OfferSalary" class="text-danger mt-1 d-block invalid-feedback"></span>
                     </div>
                 </div>
 
@@ -103,6 +106,9 @@
                            asp-for="@Model.RequestSalary"
                            id="form-contract-request-salary"
                            class="form-control" />
+                        <span id="form-contract-time" class="input-group-text">
+                            $
+                        </span>
                         <span asp-validation-for="RequestSalary" class="text-danger mt-1 d-block invalid-feedback"></span>
                     </div>
                 </div>
@@ -116,11 +122,11 @@
                         </span>
                         <textarea id="form-contract-descriptio"
                               class="form-control"
-                            placeholder="Description"></textarea>
+                              placeholder="Description"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary">Cancel</button>
+                    <a href="@Url.Action("Index", "Contract")" class="btn btn-outline-danger">Cancel</a>
                     <button type="submit" class="btn btn-primary">Create contract</button>
                 </div>
             </form>

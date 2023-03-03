@@ -7,7 +7,7 @@ using Repository.Repositories.interfaces;
 
 namespace JobApplicationManagement.Controllers
 {
-    //[TypeFilter(typeof(AuthorizationFilter))]
+    [TypeFilter(typeof(AuthorizationFilter))]
     public class JobDescriptionController : Controller
     {
         private readonly ILogger<JobDescriptionController> _logger;
