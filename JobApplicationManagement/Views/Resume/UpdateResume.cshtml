@@ -1,0 +1,123 @@
+﻿@using JobApplicationManagement.Utils;
+@using Repository.Models;
+@using JobApplicationManagement.Models.Resume;
+@model UpdateResumeModel;
+@{
+    var skills = ViewData["Skills"] as List<Skill>;
+}
+
+<h1>Resume</h1>
+<table>
+    <div class="col-xxl">
+        <div class="card mb-4">
+            <div class="card-header d-flex align-items-center justify-content-between">
+                <h5 class="mb-0">Your Resume</h5>
+                <button class="btn btn-outline-primary float-end">
+                    <a href="@Model.FileUrl">Preview</a>
+                </button>
+            </div>
+            <form asp-action="UpdateResume" asp-controller="Resume" class="form card-body" method="post"> 
+                <div class="card-body">
+                    
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="basic-default-name">Full Name</label>
+                            <div class="col-sm-10">
+                                <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    id="basic-default-name" 
+                                    placeholder="John Doe"
+                                    asp-for="@Model.Name" />
+                            <span asp-validation-for="Name" class="text-danger mt-1 d-block invalid-feedback"></span>
+                            </div>
+                            
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="html5-date-input" class="col-md-2 col-form-label">Birthday</label>
+                            <div class="col-md-10">
+                                <input class="form-control" type="date" value="2021-06-18" id="html5-date-input" asp-for="@Model.Birthday"/>
+                            <span asp-validation-for="Birthday" class="text-danger mt-1 d-block invalid-feedback"></span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="basic-default-email">Email</label>
+                            <div class="col-sm-10">
+                                <div class="input-group input-group-merge">
+                                    <input type="text"
+                                           id="basic-default-email"
+                                           class="form-control"
+                                           placeholder="john.doe"
+                                           aria-label="john.doe"
+                                           aria-describedby="basic-default-email2"
+                                           asp-for="@Model.Email" />
+                                    <span class="input-group-text" id="basic-default-email2">example.com</span>
+                                <span asp-validation-for="Email" class="text-danger mt-1 d-block invalid-feedback"></span>
+                                </div>
+                                <div class="form-text">You can use letters, numbers & periods</div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="basic-default-phone">Phone No</label>
+                            <div class="col-sm-10">
+                                <input type="text"
+                                       id="basic-default-phone"
+                                       class="form-control phone-mask"
+                                       placeholder="658 799 8941"
+                                       aria-label="658 799 8941"
+                                       aria-describedby="basic-default-phone"
+                                       asp-for="@Model.Phone" />
+                            <span asp-validation-for="Phone" class="text-danger mt-1 d-block invalid-feedback"></span>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="basic-default-message">Description</label>
+                            <div class="col-sm-10">
+                                <textarea id="basic-default-message"
+                                          class="form-control"
+                                          placeholder="Hi, I want to apply this JD ...?"
+                                          aria-label="Hi, Do you have a moment to talk Joe?"
+                                          aria-describedby="basic-icon-default-message2"
+                                          asp-for="@Model.Description">
+                                </textarea>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="formFile" class="col-sm-2 col-form-label">Updated File</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" type="file" id="formFile" 
+                                asp-for="@Model.UpdatedFile"
+                                   accept="application/pdf/" />
+                            <span asp-validation-for="UpdatedFile" class="text-danger mt-1 d-block invalid-feedback"></span>
+                            </div>
+               
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label">Skills</label>
+                            <div class="col-sm-10">
+                                <select asp-for="@Model.SkillIds" class="form-select" id="select-skills">
+                                    @if (skills != null && skills.Count() > 0)
+                                    {
+                                        @foreach (var skill in @skills)
+                                        {
+                                                    <option value="@skill.Id">@skill.Name</option>
+                                        }
+                                    }
+                                </select>
+                                <span asp-validation-for="SkillIds" class="text-danger mt-1 d-block invalid-feedback"></span>
+                            </div>
+                        </div>
+
+                        <div class="row justify-content-end">
+                            <div class="col-sm-10">
+                                <button type="submit" class="btn btn-primary">Send</button>
+                            </div>
+                        </div>
+                   
+                </div>
+            </form>
+        </div>
+    </div>
+</table>

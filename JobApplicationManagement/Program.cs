@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Repository;
 using Repository.Repositories;
 using Repository.Repositories.interfaces;
+using JobApplicationManagement.Services;
 
 namespace JobApplicationManagement
 {
@@ -30,6 +31,7 @@ namespace JobApplicationManagement
             // Define DI for repository
             builder.Services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             builder.Services.AddScoped(typeof(IAccountRepository), typeof(AccountRepository));
+            builder.Services.AddScoped(typeof(IStorageService), typeof(StorageService));
             builder.Services.AddScoped(typeof(ICompanyRepository), typeof(CompanyRepository));
             builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
