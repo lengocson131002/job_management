@@ -1,5 +1,6 @@
 ﻿using JobApplicationManagement.Models.Auth;
 using Microsoft.AspNetCore.Mvc;
+using Repository.Enums;
 using Repository.Models;
 using Repository.Repositories.interfaces;
 using System.Security.Cryptography;
@@ -29,7 +30,7 @@ namespace JobApplicationManagement.Controllers
             }
 
             Account? account = _accountRepository.GetByUsername(model.Username);
-            if (account == null || !Object.Equals(model.Password, account.Password))
+            if (account == null || !Object.Equals(model.Password, account.Password) || !Object.Equals(account.Status, AccountStatus.ACTIVE))
             {
                 ViewBag.Error = "Incorrect Username Password";
                 return View(nameof(Index));
@@ -38,11 +39,16 @@ namespace JobApplicationManagement.Controllers
             HttpContext.Session.SetString("currentIsRootAdmin", account.IsRootAdmin + "");
             HttpContext.Session.SetString("currentName", account.FullName);
             HttpContext.Session.SetString("currentUsername", account.FullName);
+            string? redirectUrl = HttpContext.Session.GetString("redirectUrl");
+            if (redirectUrl != null)
+            {
+                HttpContext.Session.Remove("redirectUrl");
+                return Redirect(redirectUrl);
 
+            }
             return RedirectToAction("Index", "Home");
         }
-
-        [HttpPost]
+        
         public IActionResult Logout()
         {
             if (!ModelState.IsValid)

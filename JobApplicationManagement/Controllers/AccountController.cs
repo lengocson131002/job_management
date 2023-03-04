@@ -1,6 +1,7 @@
 ﻿using JobApplicationManagement.Filters;
 using JobApplicationManagement.Models.Auth;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Repository.Enums;
 using Repository.Models;
 using Repository.Repositories;
@@ -92,11 +93,14 @@ namespace JobApplicationManagement.Controllers
         [HttpPost]
         public IActionResult Add(AddAccountModel model)
         {
+            if (!Object.Equals(model.Password, model.ConfirmPassword))
+            {
+                ModelState.TryAddModelError("ConfirmPassword", "Password and Confirm Password must be match");
+            }
             if (!ModelState.IsValid)
             {
                 return View(nameof(AddAccount), model);
             }
-
             Account? account = _accountRepository.GetByUsername(model.Username);
             if (account != null)
             {

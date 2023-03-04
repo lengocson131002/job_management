@@ -112,70 +112,67 @@
                         </a>
                     </div>
 
-                <div class="menu-inner-shadow"></div>
+                    <div class="menu-inner-shadow"></div>
                     <ul class="menu-inner py-1 ps ps-active-y">
-                    <!-- Dashboard -->
+                        <!-- Dashboard -->
                         <li class="@(controllerName == "Account" ? "active menu-item" : "menu-item")">
-                        <a class="menu-link d-flex align-items-center" asp-area="" asp-controller="Account" asp-action="Index">
-                            <ion-icon class="menu-icon tf-icons" name="person-outline"></ion-icon>
-                            Account
-                        </a>
-                    </li>
+                            <a class="menu-link d-flex align-items-center" asp-area="" asp-controller="Account" asp-action="Index">
+                                <ion-icon class="menu-icon tf-icons" name="person-outline"></ion-icon>
+                                Account
+                            </a>
+                        </li>
 
                         <li class="@(controllerName == "JobDescription" ? "active menu-item" : "menu-item")">
-                        <a class="menu-link d-flex align-items-center" asp-area="" asp-controller="JobDescription" asp-action="Index">
-                            <ion-icon class="menu-icon tf-icons" name="construct-outline"></ion-icon>
-                            Jobs
-                        </a>
-                    </li>
+                            <a class="menu-link d-flex align-items-center" asp-area="" asp-controller="JobDescription" asp-action="Index">
+                                <ion-icon class="menu-icon tf-icons" name="construct-outline"></ion-icon>
+                                Jobs
+                            </a>
+                        </li>
 
                         <li class="@(controllerName == "Contract" ? "active menu-item" : "menu-item")">
-                        <a class="menu-link d-flex align-items-center" asp-area="" asp-controller="Contract" asp-action="Index">
-                            <ion-icon class="menu-icon tf-icons" name="document-text-outline"></ion-icon>
-                            Contracts
-                        </a>
-                    </li>
+                            <a class="menu-link d-flex align-items-center" asp-area="" asp-controller="Contract" asp-action="Index">
+                                <ion-icon class="menu-icon tf-icons" name="document-text-outline"></ion-icon>
+                                Contracts
+                            </a>
+                        </li>
                         <li class="@(controllerName == "Company" ? "active menu-item" : "menu-item")">
-                        <a class="menu-link d-flex align-items-center" asp-area="" asp-controller="Company" asp-action="Index">
-                            <ion-icon class="menu-icon tf-icons" name="podium-outline"></ion-icon>
-                            Company
-                        </a>
-                    </li>
+                            <a class="menu-link d-flex align-items-center" asp-area="" asp-controller="Company" asp-action="Index">
+                                <ion-icon class="menu-icon tf-icons" name="podium-outline"></ion-icon>
+                                Company
+                            </a>
+                        </li>
 
-                     </li>
                         <li class="@(controllerName == "Resume" ? "active menu-item" : "menu-item")">
                             <a class="menu-link d-flex align-items-center" asp-area="" asp-controller="Resume" asp-action="ViewResumes">
                                 <ion-icon class="menu-icon tf-icons" name="save-outline"></ion-icon>
-                            Resume
-                        </a>
-                    </li>
+                                Resume
+                            </a>
+                        </li>
 
-                    <li class="menu-item">
-                        <a href="javascript:void(0);" class="menu-link menu-toggle">
-                            <ion-icon class="menu-icon" name="build-outline"></ion-icon>
-                            <div data-i18n="Account setting">Account setting</div>
-                        </a>
-                        <ul class="menu-sub">
-                            <li class="menu-item">
-                                <a href="@Url.Action("MyAccount", "Account")" class="menu-link">
-                                    <div data-i18n="My profile">My profile</div>
-                                </a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="@Url.Action("ChangePassword", "Account")" class="menu-link">
-                                    <div data-i18n="Change password">Change password</div>
-                                </a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="javascript:void(0);" class="menu-link">
-                                    <form id="" asp-action="Logout" asp-controller="Auth" method="POST">
-                                        <button class="text-danger dropdown-item bg-none" type="submit">Logout</button>
-                                    </form>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
+                        <li class="menu-item">
+                            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                                <ion-icon class="menu-icon" name="build-outline"></ion-icon>
+                                <div data-i18n="Account setting">Account setting</div>
+                            </a>
+                            <ul class="menu-sub">
+                                <li class="menu-item">
+                                    <a href="@Url.Action("MyAccount", "Account")" class="menu-link">
+                                        <div data-i18n="My profile">My profile</div>
+                                    </a>
+                                </li>
+                                <li class="menu-item">
+                                    <a href="@Url.Action("ChangePassword", "Account")" class="menu-link">
+                                        <div data-i18n="Change password">Change password</div>
+                                    </a>
+                                </li>
+                                <li class="menu-item li-n">
+                                    <a href="@Url.Action("Logout", "Auth")" class="menu-link">
+                                        <div class="text-danger" data-i18n="Logout">Logout</div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
             </aside>
             <div class="layout-page">
