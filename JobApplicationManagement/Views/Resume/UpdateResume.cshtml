@@ -16,7 +16,7 @@
                     <a href="@Model.FileUrl">Preview</a>
                 </button>
             </div>
-            <form asp-action="UpdateResume" asp-controller="Resume" class="form card-body" method="post"> 
+            <form asp-action="UpdateResume" asp-controller="Resume" class="form card-body" method="post" enctype="multipart/form-data"> 
                 <div class="card-body">
                     
                         <div class="row mb-3">
@@ -35,7 +35,7 @@
                         <div class="mb-3 row">
                             <label for="html5-date-input" class="col-md-2 col-form-label">Birthday</label>
                             <div class="col-md-10">
-                                <input class="form-control" type="date" value="2021-06-18" id="html5-date-input" asp-for="@Model.Birthday"/>
+                                <input class="form-control" type="date" id="html5-date-input" asp-for="@Model.Birthday"/>
                             <span asp-validation-for="Birthday" class="text-danger mt-1 d-block invalid-feedback"></span>
                             </div>
                         </div>
@@ -85,10 +85,9 @@
 
                         <div class="row mb-3">
                             <label for="formFile" class="col-sm-2 col-form-label">Updated File</label>
+                            
                             <div class="col-sm-10">
-                                <input class="form-control" type="file" id="formFile" 
-                                asp-for="@Model.UpdatedFile"
-                                   accept="application/pdf/" />
+                                <input class="form-control" type="file" id="formFile" asp-for="@Model.UpdatedFile" accept="application/pdf" />
                             <span asp-validation-for="UpdatedFile" class="text-danger mt-1 d-block invalid-feedback"></span>
                             </div>
                

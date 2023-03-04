@@ -1,4 +1,4 @@
-﻿using JobApplicationManagement.Filters;
+using JobApplicationManagement.Filters;
 using JobApplicationManagement.Models.Resume;
 using JobApplicationManagement.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -73,6 +73,13 @@ namespace JobApplicationManagement.Controllers
                 ViewData["Skills"] = _skillRepository.GetAll().ToList();
                 return View(nameof(CreateResume), model);
             }
+
+            if (!model.File.FileName.Contains(".pdf"))
+            {
+                ViewData["Skills"] = _skillRepository.GetAll().ToList();
+                ModelState.AddModelError("File", "Only accept PDF file");
+                return View(nameof(CreateResume), model);
+            }
             var resume = new Resume(
             
                 );
@@ -131,9 +138,18 @@ namespace JobApplicationManagement.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateResume(UpdateResumeModel model)
         {
+           
             if (!ModelState.IsValid)
             {
+
                 ViewData["Skills"] = _skillRepository.GetAll().ToList();
+                return View(nameof(UpdateResume), model);
+            }
+
+            if (model.UpdatedFile != null && !model.UpdatedFile.FileName.Contains(".pdf"))
+            {
+                ViewData["Skills"] = _skillRepository.GetAll().ToList();
+                ModelState.AddModelError("UpdatedFile", "Only accept PDF file");
                 return View(nameof(UpdateResume), model);
             }
 
@@ -142,7 +158,6 @@ namespace JobApplicationManagement.Controllers
             resume.Phone = model.Phone;
             resume.Email = model.Email;
             resume.Birthday = model.Birthday;
-            resume.FileUrl = "abc.png";
             resume.Description = model.Description;
 
             var skills = new List<Skill>();
