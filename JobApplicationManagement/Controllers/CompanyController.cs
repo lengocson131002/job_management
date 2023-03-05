@@ -75,6 +75,7 @@ namespace JobApplicationManagement.Controllers
 
             _companyRepository.Update(company);
             _companyRepository.Save();
+            TempData["Success"] = "Update company successfully!";
             return RedirectToAction(nameof(Index));
         }
 
@@ -91,6 +92,9 @@ namespace JobApplicationManagement.Controllers
                 _companyRepository.Save();
                 return RedirectToAction(nameof(Index));
             }
+            
+            TempData["Success"] = "Delete company successfully!";
+
             return RedirectToAction(nameof(Index));
         }
         public IActionResult AddCompany()
@@ -139,7 +143,7 @@ namespace JobApplicationManagement.Controllers
 
             _companyRepository.Insert(company);
             _companyRepository.Save();
-            TempData["Success"] = "Add successfully";
+            TempData["Success"] = "Create company successfully!";
             return RedirectToAction(nameof(Index));
         }
 
