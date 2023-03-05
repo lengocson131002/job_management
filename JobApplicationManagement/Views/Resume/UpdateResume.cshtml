@@ -51,7 +51,7 @@
                                            aria-label="john.doe"
                                            aria-describedby="basic-default-email2"
                                            asp-for="@Model.Email" />
-                                    <span class="input-group-text" id="basic-default-email2">example.com</span>
+                                    <span class="input-group-text" id="basic-default-email2">@@example.com</span>
                                 <span asp-validation-for="Email" class="text-danger mt-1 d-block invalid-feedback"></span>
                                 </div>
                                 <div class="form-text">You can use letters, numbers & periods</div>
@@ -95,23 +95,23 @@
 
                         <div class="row mb-3">
                             <label class="col-sm-2 col-form-label">Skills</label>
-                            <div class="col-sm-10">
-                                <select asp-for="@Model.SkillIds" class="form-select" id="select-skills">
-                                    @if (skills != null && skills.Count() > 0)
-                                    {
-                                        @foreach (var skill in @skills)
+                            <div class="col-sm-10 rounded border-primary:active">
+                                <select asp-for="@Model.SkillIds" class="form-control w-100 selectpicker border" multiple id="select-skills">
+                                        @if (skills != null && skills.Count() > 0)
                                         {
-                                                    <option value="@skill.Id">@skill.Name</option>
+                                            @foreach (var skill in @skills)
+                                            {
+                                                        <option value="@skill.Id">@skill.Name</option>
+                                            }
                                         }
-                                    }
-                                </select>
-                                <span asp-validation-for="SkillIds" class="text-danger mt-1 d-block invalid-feedback"></span>
+                                    </select>
+                                    <span asp-validation-for="SkillIds" class="text-danger mt-1 d-block invalid-feedback"></span>
                             </div>
                         </div>
 
                         <div class="row justify-content-end">
                             <div class="col-sm-10">
-                                <button type="submit" class="btn btn-primary">Send</button>
+                                <button type="submit" class="btn btn-primary">Submit</button>
                             </div>
                         </div>
                    
@@ -120,3 +120,10 @@
         </div>
     </div>
 </table>
+@section scripts {
+            <script>
+                $(function () {
+                    $('.selectpicker').selectpicker();
+                });
+            </script>
+    }

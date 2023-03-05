@@ -1,4 +1,5 @@
 using JobApplicationManagement.Filters;
+using JobApplicationManagement.Models.Auth;
 using JobApplicationManagement.Models.Resume;
 using JobApplicationManagement.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -32,11 +33,11 @@ namespace JobApplicationManagement.Controllers
             return View(resumes);
         }
 
-        public IActionResult ViewResumes()
-        {
-            List<Resume> resumes = _resumeRepository.GetAll().ToList();
-            return View(resumes);
-        }
+        //public IActionResult ViewResumes()
+        //{
+        //    List<Resume> resumes = _resumeRepository.GetAll().ToList();
+        //    return View(resumes);
+        //}
 
         [HttpGet]
         public IActionResult ViewDetailResume(long id)
@@ -186,6 +187,18 @@ namespace JobApplicationManagement.Controllers
 
             _resumeRepository.Update(resume);
             return RedirectToAction("ViewResumes", "Resume");
+        }
+
+        [HttpGet]
+        public IActionResult ViewResumes(ViewResumesModel model)
+        {
+            var resumePages = _resumeRepository.GetAll(model.PageNumber, model.PageSize);
+
+            ViewData["PageNumber"] = model.PageNumber;
+            ViewData["TotalPages"] = (int)Math.Ceiling(resumePages.TotalItems * 1.0 / model.PageSize);
+
+            List<Resume> resumes = resumePages.Items;
+            return View("ViewResumes", resumes);
         }
     }
 }
