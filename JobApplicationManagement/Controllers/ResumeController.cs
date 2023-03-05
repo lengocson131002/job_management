@@ -55,6 +55,9 @@ namespace JobApplicationManagement.Controllers
         {
             Console.WriteLine(id);
             _resumeRepository.Delete(id);
+            
+            TempData["Success"] = "Delete resume successfully!";
+
             return RedirectToAction("ViewResumes", "Resume");
         }
 
@@ -113,6 +116,8 @@ namespace JobApplicationManagement.Controllers
             resume.FileUrl = "/" + model.File.FileName;
 
             _resumeRepository.Insert(resume);
+            TempData["Success"] = "Create resume successfully!";
+
             return RedirectToAction("ViewResumes", "Resume");
         }
 
@@ -186,6 +191,8 @@ namespace JobApplicationManagement.Controllers
             }
 
             _resumeRepository.Update(resume);
+            TempData["Success"] = "Update resume successfully!";
+
             return RedirectToAction("ViewResumes", "Resume");
         }
 

@@ -35,12 +35,12 @@
                     <div class="row">
                         <div class="d-flex align-items-center mb-2 col-6">
                             <ion-icon name="alarm-outline" class="me-2 bg-label-secondary p-1 rounded"></ion-icon>
-                            <div class="">@Model.Type</div>
+                            <div class="">@Model.Type.ToJobTypeString()</div>
                         </div>
 
                         <div class="d-flex align-items-center mb-2 col-6">
                             <ion-icon name="analytics-outline" class="me-2 bg-label-success p-1 rounded"></ion-icon>
-                            <div class="">@Model.Level</div>
+                            <div class="">@Model.Level.ToJobLevelString()</div>
                         </div>
                     </div>
 

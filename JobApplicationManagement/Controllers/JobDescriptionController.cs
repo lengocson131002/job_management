@@ -12,6 +12,7 @@ namespace JobApplicationManagement.Controllers
     {
         private readonly ILogger<JobDescriptionController> _logger;
         private JobDescriptionRepository _jobDescriptionRepository;
+        private ContractRepository _contractRepository;
         private IBaseRepository<Company> _companyResposiotory;
         private IBaseRepository<Skill> _skillResposiotory;
         private ResumeRepository _resumeRepository;
@@ -20,12 +21,14 @@ namespace JobApplicationManagement.Controllers
             IBaseRepository<Company> companyResposiotory,
             IBaseRepository<Skill> skillResposiotory,
             ILogger<JobDescriptionController> logger,
+            ContractRepository contractRepository,
             ResumeRepository resumeRepository)
         {
             _jobDescriptionRepository = jobDescriptionRepository;
             _companyResposiotory = companyResposiotory;
             _skillResposiotory = skillResposiotory;
             _logger = logger;
+            _contractRepository = contractRepository;
             _resumeRepository = resumeRepository;
         }
 
@@ -127,11 +130,13 @@ namespace JobApplicationManagement.Controllers
             try
             {
                 _jobDescriptionRepository.Insert(jobDescription);
+                TempData["Success"] = "Create job description successfully!";
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
                 _logger.LogError("Failed to create job description");
+                TempData["Error"] = "Create job description failed. Try again!";
             }
 
             return View(model);
@@ -226,10 +231,12 @@ namespace JobApplicationManagement.Controllers
             try
             {
                 _jobDescriptionRepository.Update(jobDescription);
+                TempData["Success"] = "Update job description successfully!";
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
+                TempData["Error"] = "Update job description failed!";
                 _logger.LogError("Failed to create job description");
             }
 
@@ -243,10 +250,12 @@ namespace JobApplicationManagement.Controllers
             try
             {
                 _jobDescriptionRepository.Delete(id);
+                TempData["Success"] = "Delete job description successfully!";
             }
             catch (Exception ex)
             {
                 _logger.LogError("Failed to create job description: ");
+                TempData["Error"] = "Delete job description failed!. Try again";
             }
             return RedirectToAction(nameof(Index));
         }
@@ -260,7 +269,10 @@ namespace JobApplicationManagement.Controllers
                 return NotFound();
             }
 
-            ViewData["Resumes"] = _resumeRepository.GetBySkills(job.Skills.Select(skill => skill.Id).ToList());
+            ViewData["Resumes"] = _resumeRepository
+                .GetBySkills(job.Skills.Select(skill => skill.Id).ToList())
+                .Where(res => _contractRepository.FindByCompanyIdAndResumeId(job.CompanyId, res.Id) == null)
+                .ToList();
 
             return View(job);
         }

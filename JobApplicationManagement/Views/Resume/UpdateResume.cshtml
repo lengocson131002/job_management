@@ -13,7 +13,7 @@
             <div class="card-header d-flex align-items-center justify-content-between">
                 <h5 class="mb-0">Your Resume</h5>
                 <button class="btn btn-outline-primary float-end">
-                    <a href="@Model.FileUrl">Preview</a>
+                    <a target="_blank" href="@Model.FileUrl">Preview</a>
                 </button>
             </div>
             <form asp-action="UpdateResume" asp-controller="Resume" class="form card-body" method="post" enctype="multipart/form-data"> 

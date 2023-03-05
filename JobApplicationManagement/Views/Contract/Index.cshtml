@@ -5,6 +5,8 @@
 @{
     var totalPages = ViewData["TotalPages"] as int?;
     var pageNumber = ViewData["PageNumber"] as int?;
+    var companies = ViewData["Companies"] as List<Company>;
+    var selectedCompanyId = ViewData["SelectedCompanyId"] as long?;
 }
 
 @if (Model != null)
@@ -12,6 +14,31 @@
     <div>
         <div class="card p-4">
             <h5 class="card-header">Contract Management</h5>
+            <form method="get" asp-action="Index" asp-controller="Contract" class="row d-flex align-items-end mb-5 ms-2">
+                <div class="col-md-3">
+                    <label for="filter-company" class="col-form-label">Company</label>
+                    <select class="w-100 form-select " id="filter-company" name="CompanyId">
+                        <option>Choose company</option>
+                        @if (companies != null && companies.Count() > 0)
+                        {
+                            foreach (var company in companies)
+                            {
+                                if (selectedCompanyId == company.Id)
+                                {
+                                    <option selected value="@company?.Id">@company?.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@company?.Id">@company?.Name</option>
+                                }
+
+                            }
+                        }
+                    </select>
+                </div>
+                <button type="submit" class="col-md-1 btn btn-primary">Search</button>
+            </form>
+
             <div class=" text-nowrap">
                 <table class="table-responsive table table-hover">
                     <thead>
@@ -44,8 +71,17 @@
                                             <div class="dropdown-menu">
                                                 <a class="dropdown-item d-flex align-items-center" href="javascript:void(0);" onclick="showContractDetail(@Model[i].Id)">
                                                     <ion-icon name="eye-outline" class=" me-2"></ion-icon>
-                                                    View contract
+                                                    View detail
                                                 </a>
+                                                <div class="text-danger dropdown-item d-flex align-items-center" href="javascript:void(0);">
+                                                    <form asp-action="Cancel" asp-controller="Contract" method="post">
+                                                        <input type="hidden" name="contractId" value="@Model[i].Id"/>
+                                                        <button type="submit" class="btn text-danger p-0">
+                                                            <ion-icon name="trash-outline" class=" me-2"></ion-icon>
+                                                            Cancel
+                                                        </button>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </td>
