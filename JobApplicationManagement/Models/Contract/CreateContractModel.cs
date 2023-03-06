@@ -26,5 +26,7 @@ namespace JobApplicationManagement.Models.Contract
         [Required]
         [Range(1, Int64.MaxValue)]
         public long RequestSalary { get; set;}
+
+        public long JobDescriptionId { get; set; }
     }
 }

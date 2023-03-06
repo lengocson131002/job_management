@@ -58,6 +58,7 @@ namespace Repository.Repositories
                 .Where(job => job.Id == id)
                 .Include(job => job.Company)
                 .Include(job => job.Skills)
+                .Include(job => job.Resumes)
                 .FirstOrDefault();
         }
     }

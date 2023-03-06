@@ -10,8 +10,8 @@
             @await Html.PartialAsync("_JobDetailView", Model)
         </div>
         <div>
-            <div class="card">
-                <h5 class="card-header">Choose Resume</h5>
+            <div class="card mb-3">
+                <h5 class="card-header">Choose Resumes</h5>
                 <div class="table-responsive text-nowrap">
                     <table class="table">
                         <thead>
@@ -56,7 +56,7 @@
                                                     <i class="bx bx-dots-vertical-rounded"></i>
                                                 </button>
                                                 <div class="dropdown-menu">
-                                                    <a class="dropdown-item d-flex align-items-center" href="@Url.Action("Create", "Contract", new {companyId = Model.CompanyId, resumeId = resumes[i].Id})">
+                                                    <a class="dropdown-item d-flex align-items-center" href="@Url.Action("Create", "Contract", new {companyId = Model.CompanyId, resumeId = resumes[i].Id, jobDescriptionId = Model.Id})">
                                                         <ion-icon name="add-circle-outline" class="me-2"></ion-icon>
                                                         Create contract
                                                     </a>
@@ -70,6 +70,68 @@
                     </table>
                 </div>
             </div>
+
+            <div class="card">
+                <h5 class="card-header">Applied Resumes</h5>
+                <div class="table-responsive text-nowrap">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>BirthDay</th>
+                                <th>Skill</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-border-bottom-0">
+                            @if (Model.Resumes != null)
+                            {
+                                @for (int i = 0; i < Model.Resumes.Count(); i++)
+                                {
+                                    <tr>
+                                        <td><i class="fab fa-angular fa-lg text-danger me-3"></i>@(i + 1)</td>
+                                        <td>@Model.Resumes[i].Name</td>
+                                        <td>@Model.Resumes[i].Email</td>
+                                        <td>@Model.Resumes[i].Phone</td>
+                                        <td>@Model.Resumes[i].Birthday</td>
+
+                                        <td>
+                                            <ul class="list-unstyled">
+                                                @if (Model.Resumes[i].Skills != null)
+                                                {
+                                                    @foreach (var skill in Model.Resumes[i].Skills)
+                                                    {
+                                                        <li>
+                                                            <span class="badge bg-label-primary me-1">@skill.Name</span>
+                                                        </li>
+                                                    }
+                                                }
+                                            </ul>
+                                        </td>
+
+                                        <td>
+                                            <div class="dropdown">
+                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <a class="dropdown-item d-flex align-items-center" href="@Url.Action("ViewDetailResume", "Resume", new {id = Model.Resumes[i].Id})">
+                                                        <ion-icon name="eye-outline" class="me-2"></ion-icon>
+                                                        View Detail
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
     </div>
 }

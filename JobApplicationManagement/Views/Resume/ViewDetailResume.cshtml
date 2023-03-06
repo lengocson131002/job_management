@@ -1,0 +1,54 @@
+﻿@using Repository.Models;
+@model Resume;
+@{
+    var skills = ViewData["Skills"] as List<Skill>;
+    var fileUrl = ViewData["FileUrl"] as string;
+}
+
+<h1>Resume</h1>
+<table>
+
+    <div class="col-lg">
+        <div class="card">
+            <h5 class="card-header">Applicant's Resume</h5>
+            <div class="card-body">
+                <small class="text-light fw-semibold">Description</small>
+                <p>@Model.Description</p>
+            </div>
+            <hr class="m-0" />
+            <div class="card-body">
+                <small class="text-light fw-semibold">Resume Information</small>
+                <button class="btn btn-outline-primary float-end">
+                    <a target="_blank" href="@fileUrl">Preview</a>
+                </button>
+                <dl class="row mt-2">
+                    <dt class="col-sm-3">Applicant's Name</dt>
+                    <dd class="col-sm-9">@Model.Name</dd>
+
+                    <dt class="col-sm-3">Phone</dt>
+                    <dd class="col-sm-9">
+                        <p>@Model.Phone</p>
+                    </dd>
+
+                    <dt class="col-sm-3">Email</dt>
+                    <dd class="col-sm-9">@Model.Email</dd>
+
+                    <dt class="col-sm-3 text-truncate">Birthday</dt>
+                    <dd class="col-sm-9">
+                        @Model.Birthday
+                    </dd>
+
+                    <dt class="col-sm-3">Skills</dt>
+                    <dd class="col-sm-9">
+                    @foreach(var skill in @skills)
+                    {
+                            <dl class="row">
+                                <dt class="col-sm-4">@skill.Name</dt>
+                            </dl>
+                    }
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</table>

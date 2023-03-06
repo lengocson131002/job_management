@@ -5,15 +5,42 @@
 @{
     var totalPages = ViewData["TotalPages"] as int?;
     var pageNumber = ViewData["PageNumber"] as int?;
+    var companies = ViewData["Companies"] as List<Company>;
+    var selectedCompanyId = ViewData["SelectedCompanyId"] as long?;
 }
 
 @if (Model != null)
 {
     <div>
-        <div class="card">
+        <div class="card p-4">
             <h5 class="card-header">Contract Management</h5>
-            <div class="table-responsive text-nowrap">
-                <table class="table">
+            <form method="get" asp-action="Index" asp-controller="Contract" class="row d-flex align-items-end mb-5 ms-2">
+                <div class="col-md-3">
+                    <label for="filter-company" class="col-form-label">Company</label>
+                    <select class="w-100 form-select " id="filter-company" name="CompanyId">
+                        <option>Choose company</option>
+                        @if (companies != null && companies.Count() > 0)
+                        {
+                            foreach (var company in companies)
+                            {
+                                if (selectedCompanyId == company.Id)
+                                {
+                                    <option selected value="@company?.Id">@company?.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@company?.Id">@company?.Name</option>
+                                }
+
+                            }
+                        }
+                    </select>
+                </div>
+                <button type="submit" class="col-md-1 btn btn-primary">Search</button>
+            </form>
+
+            <div class=" text-nowrap">
+                <table class="table-responsive table table-hover">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -22,8 +49,6 @@
                             <th>Created at</th>
                             <th>Interview time</th>
                             <th>Interviewer</th>
-                            <th>Request Salary</th>
-                            <th>Offer Salary</th>
                         </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
@@ -38,19 +63,25 @@
                                     <td>@Model[i].CreatedAt</td>
                                     <td>@Model[i].InterviewTime</td>
                                     <td>@Model[i].Interviewer</td>
-                                    <td>@Model[i].RequestSalary</td>
-                                    <td>@Model[i].OfferSalary</td>
-
                                     <td>
                                         <div class="dropdown">
                                             <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                                                 <i class="bx bx-dots-vertical-rounded"></i>
                                             </button>
                                             <div class="dropdown-menu">
-                                                <a class="dropdown-item d-flex align-items-center" href="@Url.Action("ViewDetail", "Contract", new { id = Model[i].Id})">
+                                                <a class="dropdown-item d-flex align-items-center" href="javascript:void(0);" onclick="showContractDetail(@Model[i].Id)">
                                                     <ion-icon name="eye-outline" class=" me-2"></ion-icon>
-                                                    Create contract
+                                                    View detail
                                                 </a>
+                                                <div class="text-danger dropdown-item d-flex align-items-center" href="javascript:void(0);">
+                                                    <form asp-action="Cancel" asp-controller="Contract" method="post">
+                                                        <input type="hidden" name="contractId" value="@Model[i].Id"/>
+                                                        <button type="submit" class="btn text-danger p-0">
+                                                            <ion-icon name="trash-outline" class=" me-2"></ion-icon>
+                                                            Cancel
+                                                        </button>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </td>
@@ -60,45 +91,164 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-    </div>
 
-    @if (totalPages > 0)
-    {
-        <div class="my-3">
-            <div class="row">
-                <div class="col">
-                    <div class="max-auto">
-                        <nav aria-label="Page navigation">
-                            <ul class="pagination d-flex justify-content-center">
-                                @if (@pageNumber != 1)
-                                {
-                                    <li class="page-item first">
-                                        <a class="page-link" href="@Url.Action("Index", "Contract", new { PageNumber = 1})">
-                                            <i class="tf-icon bx bx-chevrons-left"></i>
-                                        </a>
-                                    </li>
-                                }
-                                @for (int i = 1; i <= totalPages; i++)
-                                {
-                                    <li id="page-link" data-page-number="@i" class="page-item @(i == pageNumber ? "active" : "")">
-                                        <a class="page-link" href="@Url.Action("Index", "Contract", new { PageNumber = i})">@i</a>
-                                    </li>
-                                }
+            <!-- Modal -->
+            <div class="modal fade" id="contractDetailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Contract detail</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <hr>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="row">
+                                    <p class="col-4 d-flex align-items-center">
+                                        <ion-icon class="me-2" name="business-outline"></ion-icon>
+                                        <strong>Company</strong>
+                                        <span class="ms-auto">:</span>
+                                    </p>
+                                    <a class="col-6" id="contract-company-url" href="#">
+                                        <span id="contract-company">Unicloud</span>
+                                    </a>
+                                </div>
+                                <div class="row">
+                                    <p class="col-4 d-flex align-items-center">
+                                        <ion-icon class="me-2" name="person-outline"></ion-icon>
+                                        <strong>Candiate</strong>
+                                        <span class="ms-auto">:</span>
 
-                                @if (pageNumber != totalPages)
-                                {
-                                    <li class="page-item last">
-                                        <a class="page-link" href="@Url.Action("Index", "Contract", new { PageNumber = totalPages})">
-                                            <i class="tf-icon bx bx-chevrons-right"></i>
-                                        </a>
-                                    </li>
-                                }
-                            </ul>
-                        </nav>
+                                    </p>
+
+                                    <a class="col-6" id="contract-candidate-url" href="#">
+                                        <span id="contract-candidate">Candidate</span>
+                                    </a>
+                                </div>
+                                <div class="row">
+                                    <p class="col-4 d-flex align-items-center">
+                                        <ion-icon class="me-2" name="alarm-outline"></ion-icon>
+                                        <strong>Interview time</strong>
+                                        <span class="ms-auto">:</span>
+
+                                    </p>
+                                    <span class="col-6" id="contract-interview-time">Unicloud</span>
+                                </div>
+                                <div class="row">
+                                    <p class="col-4 d-flex align-items-center">
+                                        <ion-icon class="me-2" name="people-outline"></ion-icon>
+                                        <strong>Interviewer</strong>
+                                        <span class="ms-auto">:</span>
+
+                                    </p>
+                                    <span class="col-6" id="contract-interviewer">Unicloud</span>
+                                </div>
+                                <div class="row">
+                                    <p class="col-4 d-flex align-items-center">
+                                        <ion-icon class="me-2" name="cash-outline"></ion-icon>
+                                        <strong>Request salary</strong>
+                                        <span class="ms-auto">:</span>
+
+                                    </p>
+                                    <span class="col-6" id="contract-request-salary">Unicloud</span>
+                                </div>
+
+                                <div class="row">
+                                    <p class="col-4 d-flex align-items-center">
+                                        <ion-icon class="me-2" name="pricetags-outline"></ion-icon>
+                                        <strong>Offer salary</strong>
+                                        <span class="ms-auto">:</span>
+
+                                    </p>
+                                    <span class="col-6" id="contract-offer-salary">Unicloud</span>
+                                </div>
+
+                                <div class="row">
+                                    <p class="col-4 d-flex align-items-center">
+                                        <ion-icon class="me-2" name="create-outline"></ion-icon>
+                                        <strong>Created at</strong>
+                                        <span class="ms-auto">:</span>
+                                    </p>
+                                    <span class="col-6" id="contract-created-at">3213232</span>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+
+
+            @if (totalPages > 0)
+            {
+                <div class="my-3">
+                    <div class="row">
+                        <div class="col">
+                            <div class="max-auto">
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination d-flex justify-content-end">
+                                        @if (@pageNumber != 1)
+                                        {
+                                            <li class="page-item first">
+                                                <a class="page-link" href="@Url.Action("Index", "Contract", new { PageNumber = 1})">
+                                                    <i class="tf-icon bx bx-chevrons-left"></i>
+                                                </a>
+                                            </li>
+                                        }
+                                        @for (int i = 1; i <= totalPages; i++)
+                                        {
+                                            <li id="page-link" data-page-number="@i" class="page-item @(i == pageNumber ? "active" : "")">
+                                                <a class="page-link" href="@Url.Action("Index", "Contract", new { PageNumber = i})">@i</a>
+                                            </li>
+                                        }
+
+                                        @if (pageNumber != totalPages)
+                                        {
+                                            <li class="page-item last">
+                                                <a class="page-link" href="@Url.Action("Index", "Contract", new { PageNumber = totalPages})">
+                                                    <i class="tf-icon bx bx-chevrons-right"></i>
+                                                </a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
+    </div>
+
+    @section Scripts {
+    <script>
+        var contracts = @Html.Raw(Json.Serialize(@Model));
+        function showContractDetail(id) {
+            var contract = contracts.find(c => c?.id === id);
+            console.log(id,contracts, contract);
+            if (contract) {
+                $('#contract-company-url').attr('href', `/Company/CompanyDetail/${contract.company?.id}`);
+                $('#contract-company').html('').html(contract.company['name']);
+
+                $('#contract-candidate-url').attr('href', `/Resume/ViewDetailResume/${contract.resume?.id}`);
+                $('#contract-candidate').html('').html(contract.resume['name']);
+            
+                $('#contract-interview-time').html('').html(new Date(contract.interviewTime).toLocaleString());
+                
+                $('#contract-interviewer').html('').html(contract.interviewer);
+
+                const numberFormatter = Intl.NumberFormat('en-US');
+                $('#contract-request-salary').html('').html(numberFormatter.format(contract.requestSalary) + "$");
+                
+                $('#contract-offer-salary').html('').html(numberFormatter.format(contract.offerSalary) + " $");
+                
+                $('#contract-created-at').html('').html(new Date(contract.createdAt).toLocaleString());
+
+                $('#contractDetailModal').modal('show');
+            }
+
+        }
+    </script>
     }
+
 }

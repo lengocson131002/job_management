@@ -40,5 +40,12 @@ namespace Repository.Repositories
             };
 
         }
+
+        public Contract? FindByCompanyIdAndResumeId(long companyId, long resumeId)
+        {
+            return this.table
+                .Where(contract => contract.CompanyId == companyId && contract.ResumeId == resumeId)
+                .FirstOrDefault();
+        }
     }
 }
