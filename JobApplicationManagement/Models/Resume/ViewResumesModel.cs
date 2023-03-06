@@ -6,5 +6,6 @@ namespace JobApplicationManagement.Models.Resume
     {
         public int PageSize { get; set; } = Constant.DEFAULT_PAGE_SIZE;
         public int PageNumber { get; set; } = Constant.DEFAULT_PAGE_NUMBER;
+        public String? KeyWords { get; set; }
     }
 }

@@ -33,10 +33,21 @@ namespace Repository.Repositories
 
         public PageResult<Resume> GetAll(
             int pageNumber,
-            int pageSize)
+            int pageSize,
+            string? keywords)
         {
-            IQueryable<Resume> query = this.table
+            IQueryable<Resume> query;
+            if (keywords != null && keywords.Trim().Length > 0)
+            {
+                query = this.table
+                .Where(res => res.Name.Contains(keywords) || res.Email.Contains(keywords) || res.Phone.Contains(keywords))
                 .OrderByDescending(resume => resume.CreatedAt);
+            } else
+            {
+                query = this.table
+                .OrderByDescending(resume => resume.CreatedAt);
+            }
+            
 
             int totalItems = query.Count();
 

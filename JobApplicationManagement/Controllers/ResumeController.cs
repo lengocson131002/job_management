@@ -199,8 +199,9 @@ namespace JobApplicationManagement.Controllers
         [HttpGet]
         public IActionResult ViewResumes(ViewResumesModel model)
         {
-            var resumePages = _resumeRepository.GetAll(model.PageNumber, model.PageSize);
+            var resumePages = _resumeRepository.GetAll(model.PageNumber, model.PageSize, model.KeyWords);
 
+            ViewData["Keywords"] = model.KeyWords;
             ViewData["PageNumber"] = model.PageNumber;
             ViewData["TotalPages"] = (int)Math.Ceiling(resumePages.TotalItems * 1.0 / model.PageSize);
 

@@ -3,6 +3,7 @@
 @model List<Resume>;
 
 @{
+    var keywords = ViewData["Keywords"] as string;
     var totalPages = ViewData["TotalPages"] as int?;
     var pageNumber = ViewData["PageNumber"] as int?;
     var selectedId = ViewData["SelectedId"] as long?;
@@ -20,6 +21,28 @@
                 New
             </button>
         </form>
+        </div>
+        <div class="card p-4">
+            <div class="table-responsive text-nowrap">
+                <div class="d-flex justify-content-between align-items-end">
+                    <div class="d-flex gap-4 align-items-end">
+                        <form id="form-filter" asp-controller="Resume" asp-action="ViewResumes" method="get" class="form row mb-4 d-flex align-items-end">
+                            <div class="col-md-6">
+                                <label for="filter-query" class="col-form-label">Search</label>
+                                <div>
+                                    <input id="filter-query" class="form-control me-2" type="search" placeholder="Name, Email, Phone" aria-label="Search" asp-for="@keywords" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                       
+                    </div>
+                </div>
+            </div>
+
+            <div id="account-list"></div>
         </div>
         <div class="table-responsive text-nowrap">
             <table class="table">
@@ -74,7 +97,7 @@
                                 @if (pageNumber != 1)
                                 {
                                     <li onclick="getPage(1)" class="page-item first">
-                                        <a class="page-link" href="@Url.Action("ViewResumes", "Resume",  new { pageNumber = pageNumber - 1})">
+                                        <a class="page-link" href="@Url.Action("ViewResumes", "Resume",  new { pageNumber = pageNumber - 1, keywords = keywords})">
                                             <i class="tf-icon bx bx-chevrons-left"></i>
                                         </a>
                                     </li>
@@ -82,14 +105,14 @@
                                 @for (int i = 1; i <= totalPages; i++)
                                 {
                                     <li onclick="getPage(@i)" id="page-link" data-page-number="@i" class="page-item @(i == pageNumber ? "active" : "")">
-                                        <a class="page-link" href="@Url.Action("ViewResumes", "Resume",  new { pageNumber = i})">@i</a>
+                                        <a class="page-link" href="@Url.Action("ViewResumes", "Resume",  new { pageNumber = i, keywords = keywords})">@i</a>
                                     </li>
                                 }
 
                                 @if (pageNumber != totalPages)
                                 {
                                     <li onclick="getPage(@totalPages)" class="page-item last">
-                                        <a class="page-link" href="@Url.Action("ViewResumes", "Resume",  new { pageNumber = pageNumber + 1})">
+                                        <a class="page-link" href="@Url.Action("ViewResumes", "Resume",  new { pageNumber = pageNumber + 1, keywords = keywords})">
                                             <i class="tf-icon bx bx-chevrons-right"></i>
                                         </a>
                                     </li>
