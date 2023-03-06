@@ -13,7 +13,7 @@
             <h5 class="mb-0">Account Detail</h5>
         </div>
         <div class="card-body">
-            <form id="" asp-action="UpdateMyAccount" asp-controller="Account">
+            <form id="" asp-action="UpdateMyAccount" asp-controller="Profile">
                 <div class="mb-3">
                     <div class="flex-fill">
                         <label class="form-label" for="basic-icon-default-fullname">Id</label>
@@ -44,6 +44,7 @@
                                    asp-for="@Model.FullName"
                                    aria-describedby="basic-icon-default-fullname2" />
                         </div>
+                        <span asp-validation-for="FullName" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="mb-3">
@@ -76,6 +77,8 @@
                                    asp-for="@Model.Email"
                                    aria-describedby="basic-icon-default-email2" />
                         </div>
+                        <span asp-validation-for="Email" class="text-danger"></span>
+
                     </div>
                 </div>
                 <div class="mb-3">
@@ -93,6 +96,7 @@
                                    asp-for="@Model.Phone"
                                    aria-describedby="basic-icon-default-phone2" />
                         </div>
+                        <span asp-validation-for="Phone" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="mb-3">
