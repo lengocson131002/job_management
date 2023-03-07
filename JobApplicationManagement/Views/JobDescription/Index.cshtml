@@ -5,6 +5,7 @@
 @using Repository.Utils;
 
 @{
+    ViewData["Title"] = "JobDescription";
     var skills = ViewData["Skills"] as List<Skill>;
     var companies = ViewData["Companies"] as List<Company>;
 }
@@ -85,7 +86,7 @@
     </form>
 
     <div class="job-description-body flex-nowrap d-flex w-100">
-        <div id="job-list" class="flex-grow-1 me-4">
+        <div id="job-list" class="flex-grow-1 me-4 w-100">
         </div>
         <div id="job-detail" class="flex-grow-1">
         </div>

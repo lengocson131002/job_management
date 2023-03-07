@@ -27,5 +27,6 @@ namespace Repository.Models
         public Double OfferSalary { get; set; }    // Mức lương công ty offer
 
         public Double RequestSalary { get; set; }    // Mức lương ứng viên mong muốn
+        public string? Description { get; set; }
     }
 }

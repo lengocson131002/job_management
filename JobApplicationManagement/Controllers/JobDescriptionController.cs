@@ -47,7 +47,7 @@ namespace JobApplicationManagement.Controllers
         public PartialViewResult SearchJobDescriptions(GetAllJobDescriptionModel model)
         {
             var jobsPageResult = _jobDescriptionRepository
-               .GetAll(model.Query, model.CompanyId, model.Level, model.Type, model.SkillId, model.PageNumber, model.PageSize);
+               .GetAll(model.Query, model.CompanyId, model.Level, model.Type, model.SkillId, model.PageNumber, model.PageSize, false);
 
             var items = jobsPageResult.Items;
 
@@ -80,6 +80,11 @@ namespace JobApplicationManagement.Controllers
             if (model.MinSalary != null && model.MaxSalary != null && model.MaxSalary <= model.MinSalary)
             {
                 ModelState.AddModelError("MaxSalary", "Max Salary must be greater than Min Salary");
+            }
+
+            if (model.SkillIds?.Count == 0)
+            {
+                ModelState.AddModelError("SkillIds", "Required at least one skill");
             }
 
             DateTime today = DateTime.Today;
@@ -179,6 +184,11 @@ namespace JobApplicationManagement.Controllers
                 ModelState.AddModelError("MaxSalary", "Max Salary must be greater than Min Salary");
             }
 
+            if (model.SkillIds?.Count == 0)
+            {
+                ModelState.AddModelError("SkillIds", "Required at least one skill");
+            }
+
             DateTime today = DateTime.Today;
             if (model.ClosedAt != null && DateTime.Compare((DateTime)model.ClosedAt, today) < 0)
             {
@@ -271,7 +281,7 @@ namespace JobApplicationManagement.Controllers
 
             ViewData["Resumes"] = _resumeRepository
                 .GetBySkills(job.Skills.Select(skill => skill.Id).ToList())
-                .Where(res => _contractRepository.FindByCompanyIdAndResumeId(job.CompanyId, res.Id) == null)
+                .Where(res => job.Resumes.FirstOrDefault(r => r.Id == res.Id) == null)
                 .ToList();
 
             return View(job);
@@ -280,7 +290,55 @@ namespace JobApplicationManagement.Controllers
         [HttpGet]
         public IActionResult ChooseResume(long id, long resumeId)
         {
-            return View();
+            var job = _jobDescriptionRepository.GetById(id);
+            if (job == null)
+            {
+                return NotFound();
+            }
+            var resume = _resumeRepository.GetById(resumeId);
+            if (resume == null)
+            {
+                return NotFound();
+            }
+
+            if (job.Resumes.FirstOrDefault(res => res.Id == resumeId) != null) {
+                TempData["Error"] = "Existed resume.";
+            } else
+            {
+                job.Resumes.Add(resume);
+                _jobDescriptionRepository.Update(job);
+                TempData["Success"] = "Choose resume successfully";
+            }
+
+            return RedirectToAction(nameof(ViewDetail), new { id });
+        }
+
+        [HttpGet]
+        public IActionResult RemoveResume(long id, long resumeId)
+        {
+            var job = _jobDescriptionRepository.GetById(id);
+            if (job == null)
+            {
+                return NotFound();
+            }
+            var resume = _resumeRepository.GetById(resumeId);
+            if (resume == null)
+            {
+                return NotFound();
+            }
+
+            if (job.Resumes.FirstOrDefault(res => res.Id == resumeId) == null)
+            {
+                TempData["Error"] = "UnExisted resume.";
+            }
+            else
+            {
+                job.Resumes = job.Resumes.Where(res => res.Id != resumeId).ToList();
+                _jobDescriptionRepository.Update(job);
+                TempData["Success"] = "Remove resume from job description successfully";
+            }
+
+            return RedirectToAction(nameof(ViewDetail), new { id });
         }
     }
 

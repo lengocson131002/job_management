@@ -1,6 +1,7 @@
 ﻿@using Repository.Models;
 @model JobDescription
 @{
+    ViewData["Title"] = "JobDescription Detail";
     var resumes = ViewData["Resumes"] as List<Resume>;
 }
 @if (Model != null)
@@ -56,9 +57,17 @@
                                                     <i class="bx bx-dots-vertical-rounded"></i>
                                                 </button>
                                                 <div class="dropdown-menu">
-                                                    <a class="dropdown-item d-flex align-items-center" href="@Url.Action("Create", "Contract", new {companyId = Model.CompanyId, resumeId = resumes[i].Id, jobDescriptionId = Model.Id})">
+                                                    @* <a class="dropdown-item d-flex align-items-center" href="@Url.Action("Create", "Contract", new {companyId = Model.CompanyId, resumeId = resumes[i].Id, jobDescriptionId = Model.Id})">
+                                        <ion-icon name="add-circle-outline" class="me-2"></ion-icon>
+                                        Create contract
+                                        </a>*@
+                                                    <a class="dropdown-item d-flex align-items-center" href="@Url.Action("ViewDetailResume", "Resume", new {id = resumes[i].Id})">
+                                                        <ion-icon name="eye-outline" class="me-2"></ion-icon>
+                                                        View Detail
+                                                    </a>
+                                                    <a class="dropdown-item d-flex align-items-center" href="@Url.Action("ChooseResume", "JobDescription", new {id = Model.Id, resumeId = resumes[i].Id})">
                                                         <ion-icon name="add-circle-outline" class="me-2"></ion-icon>
-                                                        Create contract
+                                                        Apply
                                                     </a>
                                                 </div>
                                             </div>
@@ -120,6 +129,16 @@
                                                     <a class="dropdown-item d-flex align-items-center" href="@Url.Action("ViewDetailResume", "Resume", new {id = Model.Resumes[i].Id})">
                                                         <ion-icon name="eye-outline" class="me-2"></ion-icon>
                                                         View Detail
+                                                    </a>
+
+                                                    <a class="dropdown-item d-flex align-items-center" href="@Url.Action("Create", "Contract", new {companyid = Model.CompanyId, resumeid = Model.Resumes[i].Id, jobdescriptionid = Model.Id})">
+                                                        <ion-icon name="add-circle-outline" class="me-2"></ion-icon>
+                                                        Create contract
+                                                    </a>
+
+                                                    <a class="dropdown-item d-flex align-items-center text-danger" href="@Url.Action("RemoveResume", "JobDescription", new {id = Model.Id, resumeId = Model.Resumes[i].Id})">
+                                                        <ion-icon name="trash-bin-outline" class="me-2"></ion-icon>
+                                                        Remove
                                                     </a>
                                                 </div>
                                             </div>

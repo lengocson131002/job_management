@@ -4,6 +4,7 @@
 
 @model UpdateJobDescriptionModel;
 @{
+    ViewData["Title"] = "Update JobDescription";
     var companies = ViewData["Companies"] as List<Company>;
     var skills = ViewData["Skills"] as List<Skill>;
 }
@@ -45,13 +46,22 @@
                 </div>
             </div>
 
-            <div class="mb-3">
+            @*<div class="mb-3">
                 <label class="form-label" for="job-description">Description</label>
                 <div>
                     <textarea id="job-description"
                               asp-for="Description"
                               class="form-control"
                               rows="10"></textarea>
+                    <span asp-validation-for="Description" class="text-danger mt-1 d-block invalid-feedback"></span>
+                </div>
+            </div>*@
+
+
+            <div class="mb-4">
+                <label class="form-label" for="jobDescription">Description</label>
+                <div class="form-group">
+                    <textarea asp-for="Description" id="jobDescription"></textarea>
                     <span asp-validation-for="Description" class="text-danger mt-1 d-block invalid-feedback"></span>
                 </div>
             </div>
@@ -133,6 +143,26 @@
     @section scripts {
         <script>
             $(function () {
+                tinymce.init({
+                    selector: 'textarea#jobDescription',
+                    plugins: 'lists, link, image, media',
+                    toolbar: 'h1 h2 bold italic strikethrough blockquote bullist numlist backcolor | link image media | removeformat help',
+                    menubar: false,
+                    setup: (editor) => {
+                        // Apply the focus effect
+                        editor.on("init", () => {
+                            editor.getContainer().style.transition = "border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out";
+                        });
+                        editor.on("focus", () => {
+                            (editor.getContainer().style.border = "1px solid #696cff")
+                        });
+                        editor.on("blur", () => {
+                            (editor.getContainer().style.boxShadow = ""),
+                                (editor.getContainer().style.borderColor = "");
+                        });
+                    },
+                });
+
                 $('.selectpicker').selectpicker();
             });
         </script>

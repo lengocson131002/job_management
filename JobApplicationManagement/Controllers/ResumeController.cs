@@ -44,6 +44,10 @@ namespace JobApplicationManagement.Controllers
         {
             Console.WriteLine(id);
             var resume = _resumeRepository.GetById(id);
+            if (resume == null)
+            {
+                return NotFound();
+            }
             Console.WriteLine(resume.Description);
             ViewData["Skills"] = resume.Skills.ToList<Skill>();
             ViewData["FileUrl"] = _storageSrvice.getFullPathFile(resume.FileUrl);

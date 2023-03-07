@@ -8,6 +8,10 @@
             {
                 return "Deal";
             }
+            else if (min != null && max != null)
+            {
+                return min + " $" + " - " + max + " $";
+            }
             else if (min != null)
             {
                 return "Min " + min + " $";

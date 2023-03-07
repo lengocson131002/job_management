@@ -14,48 +14,44 @@
                 <h5 class="mb-0">Your Resume</h5>
                 <small class="text-muted float-end">Default label</small>
             </div>
-            <form asp-action="CreateResume" asp-controller="Resume" class="form card-body" method="post" enctype="multipart/form-data"> 
+            <form asp-action="CreateResume" asp-controller="Resume" class="form card-body" method="post" enctype="multipart/form-data">
                 <div class="card-body">
                     <form>
                         <div class="row mb-3 form-group">
                             <label class="col-sm-2 col-form-label" for="basic-default-name">Full Name</label>
                             <div class="col-sm-10">
-                                <input 
-                                    type="text" 
-                                    class="form-control" 
-                                    id="basic-default-name" 
-                                    placeholder="John Doe"
-                                    asp-for="@Model.Name" />
+                                <input type="text"
+                                       class="form-control"
+                                       id="basic-default-name"
+                                       placeholder="John Doe"
+                                       asp-for="@Model.Name" />
                                 <span asp-validation-for="Name" class="text-danger mt-1 d-block invalid-feedback"></span>
                             </div>
 
-                            
+
                         </div>
                         <div class="mb-3 row form-group">
                             <label for="html5-date-input" class="col-md-2 col-form-label">Birthday</label>
                             <div class="col-md-10">
-                                <input class="form-control" 
-                                type="date" 
-                                value="2021-06-18" 
-                                id="html5-date-input"
-                                asp-for="@Model.Birthday" />
+                                <input class="form-control"
+                                       type="date"
+                                       value="2021-06-18"
+                                       id="html5-date-input"
+                                       asp-for="@Model.Birthday" />
                                 <span asp-validation-for="Birthday" class="text-danger mt-1 d-block invalid-feedback"></span>
                             </div>
-                            
+
                         </div>
                         <div class="row mb-3 form-group">
                             <label class="col-sm-2 col-form-label" for="basic-default-email">Email</label>
                             <div class="col-sm-10">
-                                <div class="input-group input-group-merge">
-                                    <input type="text"
-                                           id="basic-default-email"
-                                           class="form-control"
-                                           placeholder="john.doe"
-                                           aria-label="john.doe"
-                                           aria-describedby="basic-default-email2"
-                                           asp-for="@Model.Email" />
-                                    <span class="input-group-text" id="basic-default-email2">@@example.com</span>
-                                </div>
+                                <input type="text"
+                                       id="basic-default-email"
+                                       class="form-control"
+                                       placeholder="john.doe"
+                                       aria-label="john.doe"
+                                       aria-describedby="basic-default-email2"
+                                       asp-for="@Model.Email" />
                                 <span asp-validation-for="Email" class="text-danger mt-1 d-block invalid-feedback"></span>
                                 <div class="form-text">You can use letters, numbers & periods</div>
                             </div>
@@ -72,7 +68,7 @@
                                        asp-for="@Model.Phone" />
                                 <span asp-validation-for="Phone" class="text-danger mt-1 d-block invalid-feedback"></span>
                             </div>
-                            
+
                         </div>
                         <div class="row mb-3 form-group">
                             <label class="col-sm-2 col-form-label" for="basic-default-message">Description</label>
@@ -107,10 +103,10 @@
                                         }
                                     }
                                 </select>
+                                <span asp-validation-for="SkillIds" class="text-danger mt-1 d-block invalid-feedback"></span>
                             </div>
-                            <span asp-validation-for="SkillIds" class="text-danger mt-1 d-block invalid-feedback"></span>
                         </div>
-                  
+
                         <div class="row justify-content-end">
                             <div class="col-sm-10">
                                 <button type="submit" class="btn btn-primary">Submit</button>

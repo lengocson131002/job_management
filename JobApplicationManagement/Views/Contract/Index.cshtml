@@ -75,7 +75,7 @@
                                                 </a>
                                                 <div class="text-danger dropdown-item d-flex align-items-center" href="javascript:void(0);">
                                                     <form asp-action="Cancel" asp-controller="Contract" method="post">
-                                                        <input type="hidden" name="contractId" value="@Model[i].Id"/>
+                                                        <input type="hidden" name="contractId" value="@Model[i].Id" />
                                                         <button type="submit" class="btn text-danger p-0">
                                                             <ion-icon name="trash-outline" class=" me-2"></ion-icon>
                                                             Cancel
@@ -172,6 +172,15 @@
                                     <span class="col-6" id="contract-created-at">3213232</span>
                                 </div>
 
+                                <div class="row">
+                                    <p class="col-4 d-flex align-items-center">
+                                        <ion-icon class="me-2" name="chatbox-ellipses-outline"></ion-icon>
+                                        <strong>Description</strong>
+                                        <span class="ms-auto">:</span>
+                                    </p>
+                                    <span class="col-6" id="contract-description">3213232</span>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -225,24 +234,26 @@
         var contracts = @Html.Raw(Json.Serialize(@Model));
         function showContractDetail(id) {
             var contract = contracts.find(c => c?.id === id);
-            console.log(id,contracts, contract);
+            console.log(id, contracts, contract);
             if (contract) {
                 $('#contract-company-url').attr('href', `/Company/CompanyDetail/${contract.company?.id}`);
                 $('#contract-company').html('').html(contract.company['name']);
 
                 $('#contract-candidate-url').attr('href', `/Resume/ViewDetailResume/${contract.resume?.id}`);
                 $('#contract-candidate').html('').html(contract.resume['name']);
-            
+
                 $('#contract-interview-time').html('').html(new Date(contract.interviewTime).toLocaleString());
-                
+
                 $('#contract-interviewer').html('').html(contract.interviewer);
 
                 const numberFormatter = Intl.NumberFormat('en-US');
                 $('#contract-request-salary').html('').html(numberFormatter.format(contract.requestSalary) + "$");
-                
+
                 $('#contract-offer-salary').html('').html(numberFormatter.format(contract.offerSalary) + " $");
-                
+
                 $('#contract-created-at').html('').html(new Date(contract.createdAt).toLocaleString());
+                
+                $('#contract-description').html('').html(contract.description);
 
                 $('#contractDetailModal').modal('show');
             }

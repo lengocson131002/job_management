@@ -1,6 +1,7 @@
 ﻿using JobApplicationManagement.Filters;
 using JobApplicationManagement.Models.Company;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Repository.Models;
 using Repository.Repositories;
 using Repository.Repositories.interfaces;
@@ -29,7 +30,7 @@ namespace JobApplicationManagement.Controllers
             Company company = _companyRepository.GetById(id);
             if (company == null)
             {
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
             UpdateCompanyModel model = new UpdateCompanyModel()
             {

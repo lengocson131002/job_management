@@ -23,7 +23,8 @@ namespace Repository.Repositories
             JobType? type,
             long? skillId,
             int pageNumber,
-            int pageSize
+            int pageSize,
+            bool includeExpired = true
             )
         {
 
@@ -34,6 +35,11 @@ namespace Repository.Repositories
                 .Where(e => companyId == null || e.CompanyId == companyId)
                 .Where(e => skillId == null || e.Skills.Any(s => s.Id == skillId))
                 .OrderByDescending(e => e.CreatedAt);
+
+            if (!includeExpired)
+            {
+                tableQuery = tableQuery.Where(e => e.ClosedAt == null || DateTime.Compare((DateTime) e.ClosedAt, DateTime.Now) >= 1);
+            }
 
             var totalItems = tableQuery.Count();
 

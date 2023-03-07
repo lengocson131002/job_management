@@ -49,6 +49,12 @@ namespace JobApplicationManagement.Controllers
         [HttpGet]
         public ActionResult Create(long companyId, long resumeId, long jobDescriptionId)
         {
+            if (_contractRepository.FindByCompanyIdAndResumeId(companyId, resumeId) != null)
+            {
+                TempData["Error"] = "Resume has been had contract with this company!";
+                return RedirectToAction(nameof(Index));
+            }
+
             var company = _companyResposiotory.GetById(companyId);
             var resume = _resumeRepository.GetById(resumeId);
             var job = _jobDescriptionRepository.GetById(jobDescriptionId);
@@ -56,6 +62,12 @@ namespace JobApplicationManagement.Controllers
             if (company == null || resume == null || job == null)
             {
                 return NotFound();
+            }
+
+            if (job.Resumes.FirstOrDefault(res => res.Id == resumeId) == null)
+            {
+                TempData["Error"] = "Resume has not apply for the job!";
+                return RedirectToAction(nameof(Index));
             }
 
             var model = new CreateContractModel
@@ -100,6 +112,12 @@ namespace JobApplicationManagement.Controllers
                 return NotFound();
             }
 
+            if (job.Resumes.FirstOrDefault(res => res.Id == resume.Id) == null)
+            {
+                TempData["Error"] = "Resume has not apply for the job!";
+                return RedirectToAction(nameof(Index));
+            }
+
             var contract = new Contract
             {
                 Company = company,
@@ -107,15 +125,11 @@ namespace JobApplicationManagement.Controllers
                 InterviewTime = model.InterviewTime,
                 Interviewer = model.Interviewer,
                 OfferSalary = model.OfferSalary,
-                RequestSalary = model.RequestSalary
+                RequestSalary = model.RequestSalary,
+                Description = model.Description
             };
 
             _contractRepository.Insert(contract);
-
-            // save jobDesctipion
-            job.Resumes.Add(resume);
-            _jobDescriptionRepository.Update(job);
-
             TempData["Success"] = "Create contract successfully!";
 
             return RedirectToAction(nameof(Index));

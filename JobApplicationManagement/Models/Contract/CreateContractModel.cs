@@ -1,5 +1,6 @@
 ﻿using Repository.Models;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Cryptography.X509Certificates;
 
 namespace JobApplicationManagement.Models.Contract
 {
@@ -28,5 +29,7 @@ namespace JobApplicationManagement.Models.Contract
         public long RequestSalary { get; set;}
 
         public long JobDescriptionId { get; set; }
+
+        public string? Description { get; set; }
     }
 }
