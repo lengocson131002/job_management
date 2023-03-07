@@ -1,5 +1,6 @@
 ﻿using JobApplicationManagement.Filters;
 using JobApplicationManagement.Models.Auth;
+using JobApplicationManagement.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Repository.Enums;
@@ -112,7 +113,7 @@ namespace JobApplicationManagement.Controllers
             {
                 Id = myuuid.ToString(),
                 Username = model.Username,
-                Password = model.Password,
+                Password = HashUtil.GetMD5(model.Password),
                 Email = model.Email,
                 FullName = model.FullName,
                 Phone = model.Phone,

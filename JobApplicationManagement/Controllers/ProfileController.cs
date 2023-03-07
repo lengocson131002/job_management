@@ -1,5 +1,6 @@
 ﻿using JobApplicationManagement.Filters;
 using JobApplicationManagement.Models.Auth;
+using JobApplicationManagement.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Models;
 using Repository.Repositories.interfaces;
@@ -84,7 +85,7 @@ namespace JobApplicationManagement.Controllers
             TempData["Success"] = "Update successfully";
             return RedirectToAction(nameof(MyAccount));
         }
-      
+
 
         [HttpGet]
         public IActionResult ChangePassword()
@@ -107,13 +108,13 @@ namespace JobApplicationManagement.Controllers
             {
                 return View(nameof(ChangePassword));
             }
-            if (!Object.Equals(model.OldPassword, account?.Password))
+            if (!HashUtil.IsValid(model.OldPassword, account?.Password))
             {
 
                 TempData["Error"] = "Old Password incorrect";
                 return View(nameof(ChangePassword));
             }
-            account.Password = model.NewPassword;
+            account.Password = HashUtil.GetMD5(model.NewPassword);
             _accountRepository.Update(account);
             TempData["Success"] = "Update Successfully";
             return View(nameof(ChangePassword));

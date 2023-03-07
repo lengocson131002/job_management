@@ -1,4 +1,5 @@
 ﻿using JobApplicationManagement.Models.Auth;
+using JobApplicationManagement.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Enums;
 using Repository.Models;
@@ -30,7 +31,7 @@ namespace JobApplicationManagement.Controllers
             }
 
             Account? account = _accountRepository.GetByUsername(model.Username);
-            if (account == null || !Object.Equals(model.Password, account.Password) || !Object.Equals(account.Status, AccountStatus.ACTIVE))
+            if (account == null || !HashUtil.IsValid(model.Password, account.Password) || !Object.Equals(account.Status, AccountStatus.ACTIVE))
             {
                 ViewBag.Error = "Incorrect Username Password";
                 return View(nameof(Index));
@@ -48,7 +49,7 @@ namespace JobApplicationManagement.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
-        
+
         public IActionResult Logout()
         {
             if (!ModelState.IsValid)
@@ -57,21 +58,6 @@ namespace JobApplicationManagement.Controllers
             }
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Auth");
-        }
-
-        private static string GetMD5(string str)
-        {
-            MD5 md5 = new MD5CryptoServiceProvider();
-            byte[] fromData = Encoding.UTF8.GetBytes(str);
-            byte[] targetData = md5.ComputeHash(fromData);
-            string byte2String = null;
-
-            for (int i = 0; i < targetData.Length; i++)
-            {
-                byte2String += targetData[i].ToString("x2");
-
-            }
-            return byte2String;
         }
 
     }
